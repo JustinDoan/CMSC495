@@ -26,6 +26,7 @@ public class AccountController implements Initializable {
     private TextField accountNumberField;
     @FXML
     private TextField balanceField;
+    private DAO dao;
     
     Stage enclosingStage;
 
@@ -34,13 +35,14 @@ public class AccountController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
+        dao = new DAO();
+        dao.connect();
+    }
 
     @FXML
     private void submit(ActionEvent event) {
         long accountNumber = 0;
-        long routingNumber = -1;
+        long routingNumber = 0;
         double balance = 0;
         
         //TODO: Add proper validation
@@ -53,10 +55,13 @@ public class AccountController implements Initializable {
         if(balanceField.getText() != ""){
             balance = Double.parseDouble(balanceField.getText());
         }
+        
+        dao.insertAccount(accountNumber, routingNumber, balance);
     }
 
     @FXML
     private void exit(ActionEvent event) {
+        dao.closeDB();
         enclosingStage.close();
     }
     

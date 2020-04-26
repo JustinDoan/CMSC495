@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="200.0" prefWidth="100.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="personalfinancemanager.AccountController">
+<VBox prefHeight="200.0" prefWidth="100.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="personalfinancemanager.AccountController">
    <children>
       <AnchorPane>
          <children>
@@ -65,7 +65,7 @@
       </AnchorPane>
       <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Button disable="true" mnemonicParsing="false" onAction="#submit" text="Submit" />
+            <Button mnemonicParsing="false" onAction="#submit" text="Submit" />
             <Button cancelButton="true" mnemonicParsing="false" onAction="#exit" text="Back" />
          </children>
       </HBox>

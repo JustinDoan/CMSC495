@@ -26,6 +26,7 @@ public class CardController implements Initializable {
     private TextField accountNumberField;
     @FXML
     private TextField balanceField;
+    private DAO dao;
 
     Stage enclosingStage;
     /**
@@ -33,15 +34,32 @@ public class CardController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        dao = new DAO();
+        dao.connect();
     }    
 
     @FXML
     private void submit(ActionEvent event) {
+        long account_num = 0;
+        long card_num = 0;
+        double balance = 0;
+        
+        if(accountNumberField.getText() != ""){
+            account_num = Long.parseLong(accountNumberField.getText());
+        }
+        if(cardNumberField.getText() != ""){
+            card_num = Long.parseLong(cardNumberField.getText());
+        }
+        if(balanceField.getText() != ""){
+            balance = Double.parseDouble(balanceField.getText());
+        }
+        
+        dao.insertCards(account_num, card_num, balance);
     }
 
     @FXML
     private void exit(ActionEvent event) {
+        dao.closeDB();
         enclosingStage.close();
     }
     

@@ -19,12 +19,13 @@ import javafx.stage.Stage;
 
 
 public class Main extends Application {
-
-    /**
-     * @param args the command line arguments
-     */
+    protected static DAO dao = new DAO();
+    
     public static void main(String[] args) {
+        dao.connect();
+        dao.closeDB();
         Application.launch(Main.class, (java.lang.String[])null);
+        
     }
 
     @Override
@@ -36,12 +37,9 @@ public class Main extends Application {
             primaryStage.setTitle("Personal Finance Manager");
             primaryStage.setScene(scene);
             primaryStage.show();
+            
         } catch (IOException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    
-        
-            
-        
+        }   
     }
 }

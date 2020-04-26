@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="322.0" prefWidth="626.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="personalfinancemanager.ReceiptController">
+<AnchorPane prefHeight="322.0" prefWidth="626.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="personalfinancemanager.ReceiptController">
    <children>
       <VBox alignment="TOP_CENTER" layoutY="-1.0" prefHeight="321.0" prefWidth="626.0">
          <children>
@@ -82,7 +82,7 @@
             </GridPane>
             <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="454.0">
                <children>
-                  <Button disable="true" mnemonicParsing="false" onAction="#submit" text="Submit" />
+                  <Button mnemonicParsing="false" onAction="#submit" text="Submit" />
                   <Button cancelButton="true" mnemonicParsing="false" onAction="#exit" text="Back" />
                </children>
             </HBox>
