@@ -72,12 +72,12 @@
                         <Insets right="20.0" />
                      </GridPane.margin>
                   </Text>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Change Due" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Transaction Date" GridPane.columnIndex="2" GridPane.rowIndex="3">
                      <GridPane.margin>
                         <Insets right="20.0" />
                      </GridPane.margin>
                   </Text>
-                  <TextField fx:id="changeField" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                  <TextField fx:id="dateField" GridPane.columnIndex="3" GridPane.rowIndex="3" />
                </children>
             </GridPane>
             <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="454.0">

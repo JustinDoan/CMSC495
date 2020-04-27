@@ -39,7 +39,7 @@ public class ReceiptController implements Initializable {
     @FXML
     private TextField cashField;
     @FXML
-    private TextField changeField;
+    private TextField dateField;
     private DAO dao;
 
     Stage enclosingStage;
@@ -68,7 +68,9 @@ public class ReceiptController implements Initializable {
         double total = 0;
         double discount = 0;
         double cash_paid = 0;
-        String time = null;
+        String date = null;
+        
+        
         
         if(!cardBox.getValue().toString().equals("")){
             card_num = Long.parseLong(cardBox.getValue().toString());
@@ -88,8 +90,11 @@ public class ReceiptController implements Initializable {
         if(!cashField.getText().equals("")){
             cash_paid = Double.parseDouble(cashField.getText());
         }
+        if(!dateField.getText().equals("")){
+            date = dateField.getText();
+        }
         
-        dao.insertReceipts(sub_total, total, sales_tax, discount, cash_paid);
+        dao.insertReceipts(card_num, sub_total, total, sales_tax, discount, cash_paid, date);
     }
 
     @FXML

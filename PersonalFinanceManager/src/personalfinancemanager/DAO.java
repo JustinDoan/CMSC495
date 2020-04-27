@@ -123,18 +123,20 @@ public class DAO {
         }  
     }
     
-    public void insertReceipts( double subTotal, double total, double tax,
-            double discount, double cash) {
-        String sql = "INSERT INTO receipts( sub_total, sales_tax,"
-                + " total, discount, cash_paid) VALUES(?,?,?,?,?)";
+    public void insertReceipts( long card_num, double subTotal, double total, double tax,
+            double discount, double cash, String date) {
+        String sql = "INSERT INTO receipts( card_num, sub_total, sales_tax,"
+                + " total, discount, cash_paid, dat_purchase) VALUES(?,?,?,?,?,?,?)";
         
         try{   
             PreparedStatement pstmt = conn.prepareStatement(sql);    
-            pstmt.setDouble(1, subTotal);
-            pstmt.setDouble(2, tax);
-            pstmt.setDouble(3, total);
-            pstmt.setDouble(4, discount);
-            pstmt.setDouble(5, cash);
+            pstmt.setLong(1, card_num);
+            pstmt.setDouble(2, subTotal);
+            pstmt.setDouble(3, tax);
+            pstmt.setDouble(4, total);
+            pstmt.setDouble(5, discount);
+            pstmt.setDouble(6, cash);
+            pstmt.setString(7, date);
             pstmt.executeUpdate();  
         } catch (SQLException e) {  
             System.out.println(e.getMessage());  
