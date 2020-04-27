@@ -15,6 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javax.swing.JOptionPane;
 
 
 /**
@@ -39,7 +40,7 @@ public class ReceiptController implements Initializable {
     @FXML
     private TextField cashField;
     @FXML
-    private TextField dateField;
+    private TextField changeDue;
     private DAO dao;
 
     Stage enclosingStage;
@@ -68,33 +69,53 @@ public class ReceiptController implements Initializable {
         double total = 0;
         double discount = 0;
         double cash_paid = 0;
-        String date = null;
+        double change = 0;
         
-        
-        
-        if(!cardBox.getValue().toString().equals("")){
+        try{
             card_num = Long.parseLong(cardBox.getValue().toString());
         }
-        if(!subtotalField.getText().equals("")){
+        catch (NumberFormatException n) {
+            JOptionPane.showMessageDialog(null, "Card Number must be a number");
+            return;
+        }
+        try{
             sub_total = Double.parseDouble(subtotalField.getText());
         }
-         if(!totalField.getText().equals("")){
+        catch (NumberFormatException n) {
+            JOptionPane.showMessageDialog(null, "Sub Total must be a number");
+        }
+        try{
             total = Double.parseDouble(totalField.getText());
         }
-        if(!taxField.getText().equals("")){
+        catch (NumberFormatException n) {
+            JOptionPane.showMessageDialog(null, "Total must be a number");
+        }
+        try{
             sales_tax = Double.parseDouble(taxField.getText());
         }
-         if(!discountField.getText().equals("")){
+        catch (NumberFormatException n) {
+            JOptionPane.showMessageDialog(null, "Sales Tax must be a number");
+        }
+        try{
             discount = Double.parseDouble(discountField.getText());
         }
-        if(!cashField.getText().equals("")){
+        catch (NumberFormatException n) {
+            JOptionPane.showMessageDialog(null, "Discount must be a number");
+        }
+        try{
             cash_paid = Double.parseDouble(cashField.getText());
         }
-        if(!dateField.getText().equals("")){
-            date = dateField.getText();
+        catch (NumberFormatException n) {
+            JOptionPane.showMessageDialog(null, "Cash paid must be a number");
+        }
+        try{
+            change = Double.parseDouble(changeDue.getText());
+        }
+        catch (NumberFormatException n) {
+            JOptionPane.showMessageDialog(null, "Cash paid must be a number");
         }
         
-        dao.insertReceipts(card_num, sub_total, total, sales_tax, discount, cash_paid, date);
+        dao.insertReceipts(card_num, sub_total, total, sales_tax, discount, cash_paid, change);
     }
 
     @FXML

@@ -18,6 +18,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javax.swing.JOptionPane;
 
 /**
  * FXML Controller class
@@ -48,9 +49,9 @@ public class TransactionController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         ObservableList<String> list = FXCollections.observableArrayList("Deposit","Withdrawal","Transfer");
         transactionBox.setItems(list);
-//        ObservableList<String> accountList = FXCollections.observableArrayList(Arrays.asList(manager.getAccounts()));
-//        recipientBox.setItems(accountList);
-//        sourceBox.setItems(accountList);
+        ObservableList<String> accountList = FXCollections.observableArrayList("A", "B", "C");
+        recipientBox.setItems(accountList);
+        sourceBox.setItems(accountList);
 
     }    
 
@@ -58,8 +59,15 @@ public class TransactionController implements Initializable {
     private void submit(ActionEvent event) {
         double amount = 0;
         String transactionType = transactionBox.getValue();
-        if(!amountField.getText().equals("")){
+        String accountTo = recipientBox.getValue();
+        String accountFrom = sourceBox.getValue();
+         
+        try{
             amount = Double.parseDouble(amountField.getText());
+        }
+        catch (NumberFormatException n) {
+            JOptionPane.showMessageDialog(null, "Amount must be a number");
+            return;
         }
         manager.transaction(transactionType, Long.parseLong(sourceBox.getValue()), Long.parseLong(recipientBox.getValue()), amount);
 

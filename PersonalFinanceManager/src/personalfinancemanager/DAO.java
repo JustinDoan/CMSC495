@@ -26,57 +26,71 @@ public class DAO {
     }
     
      private void createNewTables() {    
-        String[] tables = new String[6];
+        String[] tables = new String[7];
          
         tables[0] = "CREATE TABLE IF NOT EXISTS accounts (\n"  
-                + " _id integer PRIMARY KEY,\n"  
-                + " account_num integer NOT NULL,\n" 
-                + " routing_num integer NOT NULL,\n"
-                + " balance real\n"  
+                + " id INTEGER PRIMARY KEY AUTOINCREMENT, \n"  
+                + " account_num integer UNIQUE, \n" 
+                + " routing_num integer, \n"
+                + " balance REAL\n"  
                 + ");";  
         
         tables[1] = "CREATE TABLE IF NOT EXISTS cards (\n"
-                + " _id integer PRIMARY KEY, \n"
-                + " account_id text, \n"
-                + " account_num integer NOT NULL, \n"
-                + " card_num integer NOT NULL, \n"
-                + " balance real\n"
+                + " id INTEGER PRIMARY KEY AUTOINCREMENT, \n"
+                + " account_id NUMBER NOT NULL, \n"
+                + " card_num NUMBER UNIQUE, \n"
+                + " balance REAL, \n"
+                + " FOREIGN KEY (account_id) REFERENCES accounts (id)\n"
                 + ");";
         
         tables[2] = "CREATE TABLE IF NOT EXISTS receipts (\n"
-                + " _id integer PRIMARY KEY, \n"
-                + " card_id text, \n"
-                + " card_num integer, \n"
-                + " sub_total real, \n"
-                + " sales_tax real, \n"
-                + " total real, \n"
-                + " discount real, \n"
-                + " cash_paid real, \n"
-                + " dat_purchase text\n"
+                + " id INTEGER PRIMARY KEY AUTOINCREMENT, \n"
+                + " user_id NUMBER NOT NULL, \n"
+                + " card_id NUMBER, \n"
+                + " sub_total REAL, \n"
+                + " sales_tax REAL, \n"
+                + " discount REAL, \n"
+                + " total REAL, \n"
+                + " cash_paid REAL, \n"
+                + " change_due REAL, \n"
+                + " FOREIGN KEY (card_id) REFERENCES cards (id)\n"
                 + ");";
         
         tables[3] = "CREATE TABLE IF NOT EXISTS users (\n"
-                + " _id integer PRIMARY KEY, \n"
-                + " last_update dateTime, \n"
-                + " user_name text NOT NULL, \n"
-                + " password hash NOT NULL, \n"
-                + " email_address formatted string, \n"
-                + " agent_data object"
+                + " id INTEGER PRIMARY KEY AUTOINCREMENT, \n"
+                + " last_update DATETIME NOT NULL, \n"
+                + " user_name TEXT NOT NULL UNIQUE, \n"
+                + " password TEXT NOT NULL\n"
                 + ");";
         
         tables[4] = "CREATE TABLE IF NOT EXISTS users_to_accounts (\n"
-                + " user_id text NOT NULL, \n"
-                + " account_id text NOT NULL \n"
+                + " user_id NUMBER NOT NULL, \n"
+                + " account_id NUMBER NOT NULL, \n"
+                + " FOREIGN KEY (user_id) REFERENCES users (id), \n"
+                + " FOREIGN KEY (account_id) REFERENCES accounts (id)\n"
                 + ");";
         
-        tables[5] = "CREATE TABLE IF NOT EXISTS transactions (\n"
-                + " source_account_id text NOT NULL, \n"
-                + " dest_account_id text NOT NULL \n"
+        tables[5] = "CREATE TABLE IF NOT EXISTS deposits (\n"
+                + " id INTEGER PRIMARY KEY AUTOINCREMENT, \n"
+                + " source_account_id NUMBER NOT NULL, \n"
+                + " dest_account_id NUMBER NOT NULL, \n"
+                + " amount REAL, \n"
+                + " FOREIGN KEY (source_account_id) REFERENCES accounts (id), \n"
+                + " FOREIGN KEY (dest_account_id) REFERENCES accounts (id)\n"
+                + ");";
+        
+        tables[6] = "CREATE TABLE IF NOT EXISTS withdrawls (\n"
+                + " id INTEGER PRIMARY KEY AUTOINCREMENT, \n"
+                + " source_account_id NUMBER NOT NULL, \n"
+                + " dest_account_id NUMBER NOT NULL, \n"
+                + " amount REAL, \n"
+                + " FOREIGN KEY (source_account_id) REFERENCES accounts (id), \n"
+                + " FOREIGN KEY (dest_account_id) REFERENCES accounts (id)\n"
                 + ");";
         
         try{   
             Statement stmt = conn.createStatement();
-            for(int i = 0; i < 6; i++){
+            for(int i = 0; i < 7; i++){
                 stmt.execute(tables[i]);
             }
 
@@ -124,9 +138,9 @@ public class DAO {
     }
     
     public void insertReceipts( long card_num, double subTotal, double total, double tax,
-            double discount, double cash, String date) {
+            double discount, double cash, double change) {
         String sql = "INSERT INTO receipts( card_num, sub_total, sales_tax,"
-                + " total, discount, cash_paid, dat_purchase) VALUES(?,?,?,?,?,?,?)";
+                + " total, discount, cash_paid, change_due) VALUES(?,?,?,?,?,?,?)";
         
         try{   
             PreparedStatement pstmt = conn.prepareStatement(sql);    
@@ -136,7 +150,7 @@ public class DAO {
             pstmt.setDouble(4, total);
             pstmt.setDouble(5, discount);
             pstmt.setDouble(6, cash);
-            pstmt.setString(7, date);
+            pstmt.setDouble(7, change);
             pstmt.executeUpdate();  
         } catch (SQLException e) {  
             System.out.println(e.getMessage());  
