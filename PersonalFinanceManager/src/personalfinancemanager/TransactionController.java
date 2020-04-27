@@ -58,7 +58,7 @@ public class TransactionController implements Initializable {
     private void submit(ActionEvent event) {
         double amount = 0;
         String transactionType = transactionBox.getValue();
-        if(amountField.getText() != ""){
+        if(!amountField.getText().equals("")){
             amount = Double.parseDouble(amountField.getText());
         }
         manager.transaction(transactionType, Long.parseLong(sourceBox.getValue()), Long.parseLong(recipientBox.getValue()), amount);

@@ -44,13 +44,13 @@ public class CardController implements Initializable {
         long card_num = 0;
         double balance = 0;
         
-        if(accountNumberField.getText() != ""){
+        if(!accountNumberField.getText().equals("")){
             account_num = Long.parseLong(accountNumberField.getText());
         }
-        if(cardNumberField.getText() != ""){
+        if(!cardNumberField.getText().equals("")){
             card_num = Long.parseLong(cardNumberField.getText());
         }
-        if(balanceField.getText() != ""){
+        if(!balanceField.getText().equals("")){
             balance = Double.parseDouble(balanceField.getText());
         }
         

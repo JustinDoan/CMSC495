@@ -46,13 +46,13 @@ public class AccountController implements Initializable {
         double balance = 0;
         
         //TODO: Add proper validation
-        if(accountNumberField.getText() != ""){
+        if(!accountNumberField.getText().equals("")){
             accountNumber = Long.parseLong(accountNumberField.getText());
         }
-        if(routingNumberField.getText() != ""){
+        if(!routingNumberField.getText().equals("")){
             routingNumber = Long.parseLong(routingNumberField.getText());
         }
-        if(balanceField.getText() != ""){
+        if(!balanceField.getText().equals("")){
             balance = Double.parseDouble(balanceField.getText());
         }
         
