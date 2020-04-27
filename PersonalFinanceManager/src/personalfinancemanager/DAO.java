@@ -19,7 +19,6 @@ public class DAO {
         try {  
             conn = DriverManager.getConnection(url);
             createNewTables();
-            System.out.println("Connection to SQLite has been established.");
             
         } catch (SQLException e) {
             System.out.println(e.getMessage());
