@@ -6,6 +6,8 @@
 package personalfinancemanager;
 
 import java.net.URL;
+import java.time.LocalDate;
+import java.sql.Date;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javax.swing.JOptionPane;
@@ -40,7 +43,7 @@ public class ReceiptController implements Initializable {
     @FXML
     private TextField cashField;
     @FXML
-    private TextField changeDue;
+    private DatePicker dateField;
     private DAO dao;
 
     Stage enclosingStage;
@@ -69,7 +72,7 @@ public class ReceiptController implements Initializable {
         double total = 0;
         double discount = 0;
         double cash_paid = 0;
-        double change = 0;
+        Date date = null;
         
         try{
             card_num = Long.parseLong(cardBox.getValue().toString());
@@ -109,13 +112,13 @@ public class ReceiptController implements Initializable {
             JOptionPane.showMessageDialog(null, "Cash paid must be a number");
         }
         try{
-            change = Double.parseDouble(changeDue.getText());
+            date.valueOf(dateField.getValue());
         }
         catch (NumberFormatException n) {
             JOptionPane.showMessageDialog(null, "Cash paid must be a number");
         }
         
-        dao.insertReceipts(card_num, sub_total, total, sales_tax, discount, cash_paid, change);
+        dao.insertReceipts(card_num, sub_total, total, sales_tax, discount, cash_paid, date);
     }
 
     @FXML

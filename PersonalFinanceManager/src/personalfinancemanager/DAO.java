@@ -3,6 +3,7 @@
 package personalfinancemanager;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -44,15 +45,14 @@ public class DAO {
                 + ");";
         
         tables[2] = "CREATE TABLE IF NOT EXISTS receipts (\n"
-                + " id INTEGER PRIMARY KEY AUTOINCREMENT, \n"
-                + " user_id NUMBER NOT NULL, \n"
-                + " card_id NUMBER, \n"
+                + " _id INTEGER PRIMARY KEY AUTOINCREMENT, \n"
+                + " card_num NUMBER, \n"
                 + " sub_total REAL, \n"
                 + " sales_tax REAL, \n"
-                + " discount REAL, \n"
                 + " total REAL, \n"
+                + " discount REAL, \n"
                 + " cash_paid REAL, \n"
-                + " change_due REAL, \n"
+                + " dat_purchase DATE, \n"
                 + " FOREIGN KEY (card_id) REFERENCES cards (id)\n"
                 + ");";
         
@@ -138,7 +138,7 @@ public class DAO {
     }
     
     public void insertReceipts( long card_num, double subTotal, double total, double tax,
-            double discount, double cash, double change) {
+            double discount, double cash, Date date) {
         String sql = "INSERT INTO receipts( card_num, sub_total, sales_tax,"
                 + " total, discount, cash_paid, change_due) VALUES(?,?,?,?,?,?,?)";
         
@@ -150,7 +150,7 @@ public class DAO {
             pstmt.setDouble(4, total);
             pstmt.setDouble(5, discount);
             pstmt.setDouble(6, cash);
-            pstmt.setDouble(7, change);
+            pstmt.setDate(7, date);
             pstmt.executeUpdate();  
         } catch (SQLException e) {  
             System.out.println(e.getMessage());  

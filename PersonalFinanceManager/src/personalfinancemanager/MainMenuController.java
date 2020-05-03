@@ -7,6 +7,7 @@ package personalfinancemanager;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Date;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -24,7 +25,7 @@ import javafx.stage.Stage;
  *
  * @author marcusmaibach
  */
-public class MainMenuController implements Initializable, AccountCreator, AccountManager, ReceiptManager {
+public class MainMenuController implements Initializable, AccountCreator, AccountManager {
 
     @FXML
     private Text infoText;
@@ -153,10 +154,6 @@ public class MainMenuController implements Initializable, AccountCreator, Accoun
         }
     }
 
-    @Override
-    public void createReceipt(long accountNumber, long cardNumber, double subtotal, double total, double cashPaid, double salesTax, double discount, double changeDue) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     
     
