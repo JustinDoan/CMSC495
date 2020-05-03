@@ -7,6 +7,7 @@ package personalfinancemanager;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
@@ -32,7 +33,17 @@ public class ReportsController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        
+        //TODO: Replace with actual values
+        String[] accounts = {"1","2","3"};
+        accountBox.setItems(FXCollections.observableArrayList(accounts));
+        dataBox.setItems(FXCollections.observableArrayList(accounts));
     }    
+    public void accountChoiceDidChange(){
+        System.out.println(accountBox.getValue());
+    }
+    public void dataChoiceDidChange(){
+        System.out.println(dataBox.getValue());
+    }
     
 }
