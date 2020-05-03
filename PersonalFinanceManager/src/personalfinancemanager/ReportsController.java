@@ -26,7 +26,9 @@ public class ReportsController implements Initializable {
     private ComboBox<String> dataBox;
     @FXML
     private TableView<Comparable> tableView;
-
+    
+    String currentAccount = "";
+    String currentData = "";
     
     /**
      * Initializes the controller class.
@@ -34,16 +36,24 @@ public class ReportsController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
+
+        //GUI Test Values
         //TODO: Replace with actual values
         String[] accounts = {"1","2","3"};
         accountBox.setItems(FXCollections.observableArrayList(accounts));
         dataBox.setItems(FXCollections.observableArrayList(accounts));
     }    
     public void accountChoiceDidChange(){
-        System.out.println(accountBox.getValue());
+        currentAccount = accountBox.getValue();
+        populateTable(currentAccount,currentData);
     }
     public void dataChoiceDidChange(){
-        System.out.println(dataBox.getValue());
+        currentData = dataBox.getValue();
+        populateTable(currentAccount,currentData);
+    }
+    
+    public void populateTable(String account, String data){
+        
     }
     
 }
