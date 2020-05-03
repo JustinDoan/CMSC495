@@ -22,8 +22,8 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <ComboBox fx:id="accountBox" prefWidth="150.0" promptText="Account" GridPane.halignment="RIGHT" />
-                  <ComboBox fx:id="dataBox" prefWidth="150.0" promptText="Data Type" GridPane.columnIndex="1" />
+                  <ComboBox fx:id="accountBox" onAction="#accountChoiceDidChange" prefWidth="150.0" promptText="Account" GridPane.halignment="RIGHT" />
+                  <ComboBox fx:id="dataBox" onAction="#dataChoiceDidChange" prefWidth="150.0" promptText="Data Type" GridPane.columnIndex="1" />
                </children>
             </GridPane>
             <TableView fx:id="tableView">
