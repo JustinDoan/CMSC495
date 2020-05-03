@@ -63,6 +63,20 @@ public class MainMenuController implements Initializable, AccountCreator, Accoun
 
     @FXML
     private void report(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Reports.fxml"));
+            Scene scene = new Scene(loader.load(), 580, 403);
+            
+            ReportsController reportsController = loader.getController();
+            
+            Stage reportsStage = new Stage();
+            reportsStage.setTitle("Reports");
+            reportsStage.setScene(scene);
+            reportsStage.show();
+
+        } catch (IOException ex) {
+            Logger.getLogger(MainMenuController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     @FXML
     private void newTransaction(ActionEvent event) {
