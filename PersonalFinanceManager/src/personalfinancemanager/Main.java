@@ -4,17 +4,14 @@
  * and open the template in the editor.
  */
 package personalfinancemanager;
-
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
 /**
  *
  * @author marcusmaibach
@@ -34,11 +31,8 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            //*
             FXMLLoader loader = new FXMLLoader(getClass().getResource("MainMenu.fxml"));
             Scene scene = new Scene(loader.load(), 480, 320);
-            //  ^ THIS IS WHERE I INJECT LOGIN FXML */
-            
             
             primaryStage.setTitle("Personal Finance Manager");
             primaryStage.setScene(scene);

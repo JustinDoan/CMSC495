@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javax.swing.JOptionPane;
 
 /**
  * FXML Controller class
@@ -44,14 +45,23 @@ public class CardController implements Initializable {
         long card_num = 0;
         double balance = 0;
         
-        if(accountNumberField.getText() != ""){
+        try{
             account_num = Long.parseLong(accountNumberField.getText());
         }
-        if(cardNumberField.getText() != ""){
+        catch (NumberFormatException n) {
+            JOptionPane.showMessageDialog(null, "Account Number must be a number");
+        }
+        try{
             card_num = Long.parseLong(cardNumberField.getText());
         }
-        if(balanceField.getText() != ""){
+        catch (NumberFormatException n) {
+            JOptionPane.showMessageDialog(null, "Card Number must be a number");
+        }
+        try{
             balance = Double.parseDouble(balanceField.getText());
+        }
+        catch (NumberFormatException n) {
+            JOptionPane.showMessageDialog(null, "Balance must be a number");
         }
         
         dao.insertCards(account_num, card_num, balance);

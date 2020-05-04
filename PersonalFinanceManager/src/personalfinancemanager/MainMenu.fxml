@@ -30,7 +30,7 @@
                </rowConstraints>
                <children>
                   <Button mnemonicParsing="false" onAction="#newReceipt" text="New Receipt" />
-                  <Button disable="true" mnemonicParsing="false" onAction="#report" text="Reports" GridPane.columnIndex="1" />
+                  <Button mnemonicParsing="false" onAction="#report" text="Reports" GridPane.columnIndex="1" />
                   <Button mnemonicParsing="false" onAction="#newAccount" text="New Account" GridPane.rowIndex="1" />
                   <Button mnemonicParsing="false" onAction="#newCard" text="New Card" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                </children>

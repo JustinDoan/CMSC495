@@ -1,35 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.text.*?>
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="237.0" prefWidth="512.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="personalfinancemanager.LoginController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="237.0" prefWidth="512.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox layoutX="110.0" layoutY="57.0" prefHeight="123.0" prefWidth="293.0">
+      <GridPane hgap="8.0" layoutX="93.0" layoutY="66.0" prefHeight="119.0" prefWidth="289.0" vgap="8.0" AnchorPane.bottomAnchor="52.0" AnchorPane.leftAnchor="93.0" AnchorPane.rightAnchor="130.0" AnchorPane.topAnchor="66.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="331.0" minWidth="10.0" prefWidth="161.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="353.0" minWidth="0.0" prefWidth="208.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="51.0" minHeight="10.0" prefHeight="27.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="79.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="79.0" minHeight="10.0" prefHeight="52.0" vgrow="SOMETIMES" />
+        </rowConstraints>
          <children>
-            <GridPane hgap="8.0" prefHeight="119.0" prefWidth="289.0" vgap="8.0">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="331.0" minWidth="10.0" prefWidth="161.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="353.0" minWidth="0.0" prefWidth="208.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints maxHeight="51.0" minHeight="10.0" prefHeight="27.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="79.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="79.0" minHeight="10.0" prefHeight="52.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="User Name" GridPane.halignment="RIGHT" />
-                  <TextField fx:id="userNameField" GridPane.columnIndex="1" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Password" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                  <TextField fx:id="pwField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Button fx:id="newUserButton" alignment="CENTER" mnemonicParsing="false" onAction="#createUser" prefHeight="25.0" prefWidth="83.0" text="New User" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                  <Button fx:id="loginButton" alignment="CENTER" mnemonicParsing="false" onAction="#submit" prefHeight="25.0" prefWidth="83.0" text="Login" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-               </children>
-            </GridPane>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="User Name" GridPane.halignment="RIGHT" />
+            <TextField fx:id="userName" GridPane.columnIndex="1" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Password" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+            <TextField fx:id="password" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Button alignment="CENTER" disable="true" mnemonicParsing="false" prefHeight="25.0" prefWidth="83.0" text="New User" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+            <Button alignment="CENTER" mnemonicParsing="false" onAction="#submit" prefHeight="25.0" prefWidth="83.0" text="Login" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
          </children>
-      </VBox>
+      </GridPane>
    </children>
 </AnchorPane>

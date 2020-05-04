@@ -7,6 +7,7 @@ package personalfinancemanager;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Date;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -15,27 +16,21 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.stage.Modality;
 
 /**
  * FXML Controller class
  *
  * @author marcusmaibach
  */
-public class MainMenuController implements Initializable, AccountCreator, AccountManager, ReceiptManager, LoginManager {
+public class MainMenuController implements Initializable, AccountCreator, AccountManager {
 
     @FXML
     private Text infoText;
     
-    Stage enclosingStage;
-    Stage parentStage;
-    
     User currentUser = new User();
-    
     /**
      * Initializes the controller class.
      */
@@ -45,31 +40,7 @@ public class MainMenuController implements Initializable, AccountCreator, Accoun
        currentUser.addAccount(a);
        Account b = new Account(141, 12123, 10);
        currentUser.addAccount(b);
-       
-       authenticate(); //ZACHARY SMITH 05/03/2020
-    }
-
-    @FXML
-    private void authenticate() {
-        //* ZACHARY SMITH 05/03/2020
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Login2.fxml"));
-            Scene scene = new Scene(loader.load());
-            Login2Controller loginController = loader.getController();
-            Stage loginStage = new Stage();
-            loginStage.setTitle("Login");
-            loginStage.setScene(scene);
-            loginStage.initModality(Modality.APPLICATION_MODAL);
-            loginStage.setAlwaysOnTop(true);
-            loginStage.setResizable(false);
-            //this.enclosingStage.hide();
-            loginController.enclosingStage = loginStage;
-            loginController.parentStage = this.enclosingStage;
-            loginStage.show();
-        } catch (IOException ex) {
-            Logger.getLogger(MainMenuController.class.getName()).log(Level.SEVERE, null, ex);
-        } //*/
-    }
+    }    
 
     @FXML
     private void newReceipt(ActionEvent event) {
@@ -92,8 +63,21 @@ public class MainMenuController implements Initializable, AccountCreator, Accoun
 
     @FXML
     private void report(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Reports.fxml"));
+            Scene scene = new Scene(loader.load(), 580, 403);
+            
+            ReportsController reportsController = loader.getController();
+            
+            Stage reportsStage = new Stage();
+            reportsStage.setTitle("Reports");
+            reportsStage.setScene(scene);
+            reportsStage.show();
+
+        } catch (IOException ex) {
+            Logger.getLogger(MainMenuController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-    
     @FXML
     private void newTransaction(ActionEvent event) {
         try {
@@ -112,7 +96,6 @@ public class MainMenuController implements Initializable, AccountCreator, Accoun
             Logger.getLogger(MainMenuController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
     @FXML
     private void newAccount(ActionEvent event) {
         try {
@@ -185,14 +168,7 @@ public class MainMenuController implements Initializable, AccountCreator, Accoun
         }
     }
 
-    @Override
-    public void createReceipt(long accountNumber, long cardNumber, double subtotal, double total, double cashPaid, double salesTax, double discount, double changeDue) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
-    @Override
-    public void login(String userName, String password) {
-        //TODO
-    }
+    
     
 }

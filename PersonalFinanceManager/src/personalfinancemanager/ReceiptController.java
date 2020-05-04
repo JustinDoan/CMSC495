@@ -6,14 +6,20 @@
 package personalfinancemanager;
 
 import java.net.URL;
+import java.time.LocalDate;
+import java.sql.Date;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import java.time.LocalDateTime;
+import javax.swing.JOptionPane;
+
 
 /**
  * FXML Controller class
@@ -27,9 +33,9 @@ public class ReceiptController implements Initializable {
     @FXML
     private TextField discountField;
     @FXML
-    private ComboBox<?> accountBox;
+    private ComboBox<Integer> accountBox;
     @FXML
-    private ComboBox<?> cardBox;
+    private ComboBox<Integer> cardBox;
     @FXML
     private TextField subtotalField;
     @FXML
@@ -37,7 +43,7 @@ public class ReceiptController implements Initializable {
     @FXML
     private TextField cashField;
     @FXML
-    private TextField changeField;
+    private DatePicker dateField;
     private DAO dao;
 
     Stage enclosingStage;
@@ -51,6 +57,10 @@ public class ReceiptController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         dao = new DAO();
         dao.connect();
+        
+        ObservableList<Integer> list = FXCollections.observableArrayList(1, 2, 3);
+        accountBox.setItems(list);
+        cardBox.setItems(list);
     }    
 
     @FXML
@@ -62,29 +72,53 @@ public class ReceiptController implements Initializable {
         double total = 0;
         double discount = 0;
         double cash_paid = 0;
-        LocalDateTime time = LocalDateTime.now();
+        Date date = null;
         
-        if(cardBox.getValue().toString() != ""){
+        try{
             card_num = Long.parseLong(cardBox.getValue().toString());
         }
-        if(subtotalField.getText() != ""){
+        catch (NumberFormatException n) {
+            JOptionPane.showMessageDialog(null, "Card Number must be a number");
+            return;
+        }
+        try{
             sub_total = Double.parseDouble(subtotalField.getText());
         }
-         if(totalField.getText() != ""){
+        catch (NumberFormatException n) {
+            JOptionPane.showMessageDialog(null, "Sub Total must be a number");
+        }
+        try{
             total = Double.parseDouble(totalField.getText());
         }
-          if(taxField.getText() != ""){
+        catch (NumberFormatException n) {
+            JOptionPane.showMessageDialog(null, "Total must be a number");
+        }
+        try{
             sales_tax = Double.parseDouble(taxField.getText());
         }
-         if(discountField.getText() != ""){
+        catch (NumberFormatException n) {
+            JOptionPane.showMessageDialog(null, "Sales Tax must be a number");
+        }
+        try{
             discount = Double.parseDouble(discountField.getText());
         }
-        if(cashField.getText() != ""){
+        catch (NumberFormatException n) {
+            JOptionPane.showMessageDialog(null, "Discount must be a number");
+        }
+        try{
             cash_paid = Double.parseDouble(cashField.getText());
         }
+        catch (NumberFormatException n) {
+            JOptionPane.showMessageDialog(null, "Cash paid must be a number");
+        }
+        try{
+            date.valueOf(dateField.getValue());
+        }
+        catch (NumberFormatException n) {
+            JOptionPane.showMessageDialog(null, "Cash paid must be a number");
+        }
         
-        dao.insertReceipts(card_num, sub_total, total, sales_tax, discount,
-                cash_paid, time);
+        dao.insertReceipts(card_num, sub_total, total, sales_tax, discount, cash_paid, date);
     }
 
     @FXML
