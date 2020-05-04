@@ -18,6 +18,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
@@ -40,6 +41,29 @@ public class MainMenuController implements Initializable, AccountCreator, Accoun
        currentUser.addAccount(a);
        Account b = new Account(141, 12123, 10);
        currentUser.addAccount(b);
+       
+       authenticate();
+    }
+
+    @FXML
+    private void authenticate() {
+        //* ZACHARY SMITH 05/03/2020
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Login2.fxml"));
+            Scene scene = new Scene(loader.load());
+            Login2Controller loginController = loader.getController();
+            Stage loginStage = new Stage();
+            loginStage.setTitle("Login");
+            loginStage.setScene(scene);
+            loginStage.initModality(Modality.APPLICATION_MODAL);
+            loginStage.setAlwaysOnTop(true);
+            loginStage.setResizable(false);
+            //TODO hide this menu during login
+            loginController.enclosingStage = loginStage;
+            loginStage.show();
+        } catch (IOException ex) {
+            Logger.getLogger(MainMenuController.class.getName()).log(Level.SEVERE, null, ex);
+        } //*/
     }    
 
     @FXML
