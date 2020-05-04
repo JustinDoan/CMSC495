@@ -31,7 +31,7 @@ public class Login2Controller implements Initializable {
     
     Stage enclosingStage;
     Stage parentStage;
-    Session currentSession = new Session();
+    //Session currentSession = new Session();
 
     /**
      * Initializes the controller class.
