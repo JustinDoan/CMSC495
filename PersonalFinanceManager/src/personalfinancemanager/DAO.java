@@ -235,7 +235,7 @@ public class DAO {
         User currUser = new User();
         LocalDateTime now = LocalDateTime.now();
         //String salt = now.toString();
-        String sql = "SELECT id, user_name, last_update, email_address, phone_num FROM users WHERE user_name = ?;"; // AND password = ?;";
+        String sql = "SELECT id, user_name, last_update, password, email_address, phone_num FROM users WHERE user_name = ?;"; // AND password = ?;";
         int numResults = 0;
         ResultSet result;
         String sha_256hex = "";
@@ -263,18 +263,25 @@ public class DAO {
                 String userID = result.getString("id");
                 String userName = result.getString("user_name");
                 String lastUpdate = result.getString("last_update");
+                String password = result.getString("password");
                 String emailAddr = result.getString("email_address");
                 String phoneNum = result.getString("phone_num");
                 
-                System.out.println(userName); //T/S
+                System.out.println(lastUpdate); //T/S
                 
                 String saltedPW = pw.concat(lastUpdate);
                 byte[] hashbytes = digest.digest(saltedPW.getBytes(StandardCharsets.UTF_8));
                 
                 sha_256hex = bytesToHex(hashbytes);
+                
+                System.out.println(password);
+                
+                if(sha_256hex.compareTo(password) == 0) {
+                    System.out.println("Authentication successful!");
+                } else System.out.println("Authentication failed.");
             }
         } catch (SQLException e) {  
-            System.out.println(e.getMessage());  
+            System.out.println(e.getMessage());
         }
         
         if (!sha_256hex.isEmpty()) {
