@@ -71,29 +71,42 @@ public class TransactionController implements Initializable {
             JOptionPane.showMessageDialog(null, "");
             return;
         }
-        try{
-             accountTo= Long.parseLong(recipientBox.getValue());
-        }
-        catch (NumberFormatException n) {
-            JOptionPane.showMessageDialog(null, "");
-            return;
-        }
-        try{
-             accountFrom= Long.parseLong(sourceBox.getValue());
-        }
-        catch (NumberFormatException n) {
-            JOptionPane.showMessageDialog(null, "Amount must be a number");
-            return;
-        }
-        
         
         if(transactionType.equals("Deposit")){
+            try{
+                accountTo= Long.parseLong(recipientBox.getValue());
+            }
+            catch (NumberFormatException n) {
+                JOptionPane.showMessageDialog(null, "");
+                return;
+            }
             dao.insertDeposits(accountTo, amount);
         }
         else if(transactionType.equals("Withdrawal")){
+            try{
+                accountFrom= Long.parseLong(sourceBox.getValue());
+            }
+            catch (NumberFormatException n) {
+                JOptionPane.showMessageDialog(null, "Amount must be a number");
+                return;
+            }
             dao.insertWithdrawals(accountFrom, amount);
         }
         else {
+            try{
+                accountTo= Long.parseLong(recipientBox.getValue());
+            }
+            catch (NumberFormatException n) {
+                JOptionPane.showMessageDialog(null, "");
+                return;
+            }
+            try{
+                accountFrom= Long.parseLong(sourceBox.getValue());
+            }
+            catch (NumberFormatException n) {
+                JOptionPane.showMessageDialog(null, "Amount must be a number");
+                return;
+            }
             dao.insertTransfers(accountTo, accountFrom, amount);
         }
         

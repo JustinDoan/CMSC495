@@ -207,7 +207,7 @@ public class DAO {
             pstmt.executeUpdate();  
         } catch (SQLException e) {  
             System.out.println(e.getMessage());  
-        }
+        }  
     }
     
     public void insertReceipts( long card_num, double subTotal, double total, double tax,
