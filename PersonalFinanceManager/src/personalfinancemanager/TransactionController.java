@@ -74,37 +74,37 @@ public class TransactionController implements Initializable {
         
         if(transactionType.equals("Deposit")){
             try{
-                accountTo= Long.parseLong(recipientBox.getValue());
+                accountTo = Long.parseLong(recipientBox.getValue());
             }
             catch (NumberFormatException n) {
-                JOptionPane.showMessageDialog(null, "");
+                JOptionPane.showMessageDialog(null, "Must choose an account");
                 return;
             }
             dao.insertDeposits(accountTo, amount);
         }
         else if(transactionType.equals("Withdrawal")){
             try{
-                accountFrom= Long.parseLong(sourceBox.getValue());
+                accountFrom = Long.parseLong(sourceBox.getValue());
             }
             catch (NumberFormatException n) {
-                JOptionPane.showMessageDialog(null, "Amount must be a number");
+                JOptionPane.showMessageDialog(null, "Must choose an account");
                 return;
             }
             dao.insertWithdrawals(accountFrom, amount);
         }
         else {
             try{
-                accountTo= Long.parseLong(recipientBox.getValue());
+                accountTo = Long.parseLong(recipientBox.getValue());
             }
             catch (NumberFormatException n) {
-                JOptionPane.showMessageDialog(null, "");
+                JOptionPane.showMessageDialog(null, "Must choose an account");
                 return;
             }
             try{
-                accountFrom= Long.parseLong(sourceBox.getValue());
+                accountFrom = Long.parseLong(sourceBox.getValue());
             }
             catch (NumberFormatException n) {
-                JOptionPane.showMessageDialog(null, "Amount must be a number");
+                JOptionPane.showMessageDialog(null, "Must choose an account");
                 return;
             }
             dao.insertTransfers(accountTo, accountFrom, amount);
