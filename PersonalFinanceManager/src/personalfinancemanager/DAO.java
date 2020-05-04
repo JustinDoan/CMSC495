@@ -7,7 +7,14 @@ import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.PreparedStatement; 
+import java.sql.PreparedStatement;
+
+//NEEDED FOR LOGIN:
+import java.time.LocalDateTime;    
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.nio.charset.StandardCharsets;
+
 
 
 public class DAO {
@@ -60,7 +67,9 @@ public class DAO {
                 + " id INTEGER PRIMARY KEY AUTOINCREMENT, \n"
                 + " last_update DATETIME NOT NULL, \n"
                 + " user_name TEXT NOT NULL UNIQUE, \n"
-                + " password TEXT NOT NULL\n"
+                + " password TEXT NOT NULL, \n"
+                + " email_address TEXT, \n"
+                + " phone_num NUMBER \n"
                 + ");";
         
         tables[4] = "CREATE TABLE IF NOT EXISTS users_to_accounts (\n"
@@ -128,7 +137,7 @@ public class DAO {
    
         try{   
             PreparedStatement pstmt = conn.prepareStatement(sql);  
-            pstmt.setDate(1, last_update);  
+            pstmt.setDate(1, last_update);
             pstmt.setString(2, user_name);
             pstmt.setString(3, password);
             pstmt.executeUpdate();  
@@ -169,5 +178,46 @@ public class DAO {
         } catch (SQLException e) {  
             System.out.println(e.getMessage());  
         }  
+    }
+    
+    public User login (String un, String pw) {
+        User currUser = new User();
+        LocalDateTime now = LocalDateTime.now();
+        String salt = now.toString();
+        String sql = "SELECT id, user_name, last_update, email_address, phone_number FROM users WHERE user_name = ?;"; // AND password = ?;";
+        
+        final MessageDigest digest;
+        try { 
+            digest = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException nsa) {
+            System.out.println(nsa.getMessage());
+            //TODO
+            return null;
+        }
+        
+        final byte[] hashbytes = digest.digest(pw.getBytes(StandardCharsets.UTF_8));
+        String sha3_256hex = bytesToHex(hashbytes);
+        
+        try{   
+            PreparedStatement pstmt = conn.prepareStatement(sql); 
+            pstmt.setString(1, un);
+            //pstmt.setString(2, sha3_256hex);
+            pstmt.executeUpdate();  
+        } catch (SQLException e) {  
+            System.out.println(e.getMessage());  
+        }
+        
+        return currUser;
+    }
+    
+    //Source: https://www.baeldung.com/sha-256-hashing-java
+    private static String bytesToHex(byte[] hash) {
+        StringBuffer hexString = new StringBuffer();
+        for (int i = 0; i < hash.length; i++) {
+            String hex = Integer.toHexString(0xff & hash[i]);
+            if(hex.length() == 1) hexString.append('0');
+            hexString.append(hex);
+        }
+        return hexString.toString();
     }
 }
