@@ -53,7 +53,7 @@ public class DAO {
                 + " discount REAL, \n"
                 + " cash_paid REAL, \n"
                 + " dat_purchase DATE, \n"
-                + " FOREIGN KEY (card_id) REFERENCES cards (id)\n"
+                + " FOREIGN KEY (card_num) REFERENCES cards (id)\n"
                 + ");";
         
         tables[3] = "CREATE TABLE IF NOT EXISTS users (\n"
@@ -72,17 +72,17 @@ public class DAO {
         
         tables[5] = "CREATE TABLE IF NOT EXISTS deposits (\n"
                 + " id INTEGER PRIMARY KEY AUTOINCREMENT, \n"
-                + " source_account_id NUMBER NOT NULL, \n"
+                + " source_account_id NUMBER, \n"
                 + " dest_account_id NUMBER NOT NULL, \n"
                 + " amount REAL, \n"
                 + " FOREIGN KEY (source_account_id) REFERENCES accounts (id), \n"
                 + " FOREIGN KEY (dest_account_id) REFERENCES accounts (id)\n"
                 + ");";
         
-        tables[6] = "CREATE TABLE IF NOT EXISTS withdrawls (\n"
+        tables[6] = "CREATE TABLE IF NOT EXISTS withdrawals (\n"
                 + " id INTEGER PRIMARY KEY AUTOINCREMENT, \n"
                 + " source_account_id NUMBER NOT NULL, \n"
-                + " dest_account_id NUMBER NOT NULL, \n"
+                + " dest_account_id NUMBER, \n"
                 + " amount REAL, \n"
                 + " FOREIGN KEY (source_account_id) REFERENCES accounts (id), \n"
                 + " FOREIGN KEY (dest_account_id) REFERENCES accounts (id)\n"
@@ -124,7 +124,7 @@ public class DAO {
     }
     
     public void insertUser(Date last_update, String user_name, String password) {  
-        String sql = "INSERT INTO accounts(last_update, user_name, password) VALUES(?,?,?)";  
+        String sql = "INSERT INTO users(last_update, user_name, password) VALUES(?,?,?)";  
    
         try{   
             PreparedStatement pstmt = conn.prepareStatement(sql);  
@@ -149,6 +149,56 @@ public class DAO {
         } catch (SQLException e) {  
             System.out.println(e.getMessage());  
         }  
+    }
+    
+    public void insertDeposits(long destination_account, double amount) {
+        String sql = "INSERT INTO deposits(dest_account_id, amount) VALUES(?,?)";
+        
+        try{   
+            PreparedStatement pstmt = conn.prepareStatement(sql);    
+            pstmt.setLong(1, destination_account);
+            pstmt.setDouble(2, amount);
+            pstmt.executeUpdate();  
+        } catch (SQLException e) {  
+            System.out.println(e.getMessage());  
+        }  
+    }
+    
+    public void insertWithdrawals(long source_account, double amount) {
+        String sql = "INSERT INTO withdrawals(source_account_id, amount) VALUES(?,?)";
+        
+        try{   
+            PreparedStatement pstmt = conn.prepareStatement(sql);    
+            pstmt.setLong(1, source_account);
+            pstmt.setDouble(2, -amount);
+            pstmt.executeUpdate();  
+        } catch (SQLException e) {  
+            System.out.println(e.getMessage());  
+        }  
+    }
+    
+    public void insertTransfers(long source_account, long destination_account, double amount) {
+        String sql1 = "INSERT INTO withdrawals(source_account_id, amount) VALUES(?,?)";
+        
+        try{   
+            PreparedStatement pstmt = conn.prepareStatement(sql1);    
+            pstmt.setLong(1, source_account);
+            pstmt.setDouble(2, -amount);
+            pstmt.executeUpdate();  
+        } catch (SQLException e) {  
+            System.out.println(e.getMessage());  
+        }
+        
+        String sql2 = "INSERT INTO deposits(dest_account_id, amount) VALUES(?,?)";
+        
+        try{   
+            PreparedStatement pstmt = conn.prepareStatement(sql2);    
+            pstmt.setLong(1, destination_account);
+            pstmt.setDouble(2, amount);
+            pstmt.executeUpdate();  
+        } catch (SQLException e) {  
+            System.out.println(e.getMessage());  
+        }
     }
     
     public void insertReceipts( long card_num, double subTotal, double total, double tax,

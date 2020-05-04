@@ -76,6 +76,8 @@ public class Login2Controller implements Initializable {
         Platform.exit();
     }
     
+}
+    
     /* 
     public void hideMenu(Stage ps) {
         this.parentStage = ps;
@@ -83,4 +85,4 @@ public class Login2Controller implements Initializable {
         this.enclosingStage.initOwner(ps);
     } //*/
     
-}
+

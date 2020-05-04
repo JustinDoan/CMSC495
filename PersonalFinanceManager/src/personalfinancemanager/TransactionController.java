@@ -42,13 +42,13 @@ public class TransactionController implements Initializable {
     private DAO dao;
     
     Stage enclosingStage;
-    AccountManager manager;
+    //AccountManager manager;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         ObservableList<String> list = FXCollections.observableArrayList("Deposit","Withdrawal","Transfer");
         transactionBox.setItems(list);
-        ObservableList<String> accountList = FXCollections.observableArrayList("A", "B", "C");
+        ObservableList<String> accountList = FXCollections.observableArrayList("1", "2", "3");
         recipientBox.setItems(accountList);
         sourceBox.setItems(accountList);
         dao = new DAO();
@@ -60,17 +60,44 @@ public class TransactionController implements Initializable {
     private void submit(ActionEvent event) {
         double amount = 0;
         String transactionType = transactionBox.getValue();
-        String accountTo = recipientBox.getValue();
-        String accountFrom = sourceBox.getValue();
+        long accountTo = 0;
+        long accountFrom = 0;
+        String Comment = commentField.getText();
          
         try{
             amount = Double.parseDouble(amountField.getText());
         }
         catch (NumberFormatException n) {
+            JOptionPane.showMessageDialog(null, "");
+            return;
+        }
+        try{
+             accountTo= Long.parseLong(recipientBox.getValue());
+        }
+        catch (NumberFormatException n) {
+            JOptionPane.showMessageDialog(null, "");
+            return;
+        }
+        try{
+             accountFrom= Long.parseLong(sourceBox.getValue());
+        }
+        catch (NumberFormatException n) {
             JOptionPane.showMessageDialog(null, "Amount must be a number");
             return;
         }
-        manager.transaction(transactionType, Long.parseLong(sourceBox.getValue()), Long.parseLong(recipientBox.getValue()), amount);
+        
+        
+        if(transactionType.equals("Deposit")){
+            dao.insertDeposits(accountTo, amount);
+        }
+        else if(transactionType.equals("Withdrawal")){
+            dao.insertWithdrawals(accountFrom, amount);
+        }
+        else {
+            dao.insertTransfers(accountTo, accountFrom, amount);
+        }
+        
+        //manager.transaction(transactionType, Long.parseLong(sourceBox.getValue()), Long.parseLong(recipientBox.getValue()), amount);
 
         
     }
