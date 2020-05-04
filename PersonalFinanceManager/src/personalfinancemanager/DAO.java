@@ -16,7 +16,8 @@ import java.security.NoSuchAlgorithmException;
 import java.nio.charset.StandardCharsets;
 import java.sql.ResultSet;
 
-
+//NEEDED FOR GETACCOUNTS:
+import java.util.ArrayList;
 
 public class DAO {
     
@@ -241,7 +242,7 @@ public class DAO {
         String sha_256hex = "";
         
         final MessageDigest digest;
-        try { 
+        try {
             digest = MessageDigest.getInstance("SHA-256");
         } catch (NoSuchAlgorithmException nsa) {
             System.out.println(nsa.getMessage());
@@ -267,28 +268,48 @@ public class DAO {
                 String emailAddr = result.getString("email_address");
                 String phoneNum = result.getString("phone_num");
                 
-                System.out.println(lastUpdate); //T/S
-                
                 String saltedPW = pw.concat(lastUpdate);
                 byte[] hashbytes = digest.digest(saltedPW.getBytes(StandardCharsets.UTF_8));
                 
                 sha_256hex = bytesToHex(hashbytes);
                 
-                System.out.println(password);
-                
                 if(sha_256hex.compareTo(password) == 0) {
-                    System.out.println("Authentication successful!");
-                } else System.out.println("Authentication failed.");
+                    System.out.println("Authentication successful!"); //TODO-replace with dialog
+                } else System.out.println("Authentication failed."); //TODO-replace with dialog
             }
         } catch (SQLException e) {  
-            System.out.println(e.getMessage());
+            System.out.println(e.getMessage()); //TODO-replace with dialog
         }
         
         if (!sha_256hex.isEmpty()) {
             System.out.println(sha_256hex);
-        } else System.out.println("Is empty");
+        } else System.out.println("Please provide a valid user name."); //TODO-replace with dialog
         
         return currUser;
+    }
+    
+    public ArrayList<Long> getAccounts (int uid) {
+        int numResults = 0;
+        String sql =   "SELECT account_num, routing_num, balance, user_id\n" +
+                       "FROM accounts LEFT JOIN users_to_accounts\n" +
+                       "ON accounts.id = users_to_accounts.account_id\n" +
+                       "WHERE user_id = ?;";
+        ResultSet result;
+        ArrayList<Long> accts = new ArrayList<Long>();
+        
+        try{   
+            PreparedStatement pstmt = conn.prepareStatement(sql); 
+            pstmt.setInt(1, uid);
+            //pstmt.setString(2, sha3_256hex);
+            result = pstmt.executeQuery();
+            while (result.next()) {
+                numResults++;
+            }
+        } catch (SQLException e) {  
+            System.out.println(e.getMessage()); //TODO-replace with dialog
+        }
+        
+        return accts;
     }
     
     //Source: https://www.baeldung.com/sha-256-hashing-java
