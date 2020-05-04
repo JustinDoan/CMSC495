@@ -12,7 +12,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import javax.swing.JOptionPane;
 
 /**
  * FXML Controller class
@@ -47,23 +46,14 @@ public class AccountController implements Initializable {
         double balance = 0;
         
         //TODO: Add proper validation
-        try{
+        if(accountNumberField.getText() != ""){
             accountNumber = Long.parseLong(accountNumberField.getText());
         }
-        catch (NumberFormatException n) {
-            JOptionPane.showMessageDialog(null, "Account Number must be a number");
-        }
-        try{
+        if(routingNumberField.getText() != ""){
             routingNumber = Long.parseLong(routingNumberField.getText());
         }
-        catch (NumberFormatException n) {
-            JOptionPane.showMessageDialog(null, "Routing Number must be a number");
-        }
-        try{
+        if(balanceField.getText() != ""){
             balance = Double.parseDouble(balanceField.getText());
-        }
-        catch (NumberFormatException n) {
-            JOptionPane.showMessageDialog(null, "Balance must be a number");
         }
         
         dao.insertAccount(accountNumber, routingNumber, balance);
