@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.nio.charset.StandardCharsets;
+import java.sql.ResultSet;
 
 
 
@@ -233,8 +234,11 @@ public class DAO {
     public User login (String un, String pw) {
         User currUser = new User();
         LocalDateTime now = LocalDateTime.now();
-        String salt = now.toString();
-        String sql = "SELECT id, user_name, last_update, email_address, phone_number FROM users WHERE user_name = ?;"; // AND password = ?;";
+        //String salt = now.toString();
+        String sql = "SELECT id, user_name, last_update, email_address, phone_num FROM users WHERE user_name = ?;"; // AND password = ?;";
+        int numResults = 0;
+        ResultSet result;
+        String sha_256hex = "";
         
         final MessageDigest digest;
         try { 
@@ -245,17 +249,37 @@ public class DAO {
             return null;
         }
         
-        final byte[] hashbytes = digest.digest(pw.getBytes(StandardCharsets.UTF_8));
-        String sha3_256hex = bytesToHex(hashbytes);
-        
         try{   
             PreparedStatement pstmt = conn.prepareStatement(sql); 
             pstmt.setString(1, un);
             //pstmt.setString(2, sha3_256hex);
-            pstmt.executeUpdate();  
+            result = pstmt.executeQuery();
+            while (result.next()) {
+                numResults++;
+                if(numResults > 1) {
+                    //TODO should not happen since user_name is unique
+                    break;
+                }
+                String userID = result.getString("id");
+                String userName = result.getString("user_name");
+                String lastUpdate = result.getString("last_update");
+                String emailAddr = result.getString("email_address");
+                String phoneNum = result.getString("phone_num");
+                
+                System.out.println(userName); //T/S
+                
+                String saltedPW = pw.concat(lastUpdate);
+                byte[] hashbytes = digest.digest(saltedPW.getBytes(StandardCharsets.UTF_8));
+                
+                sha_256hex = bytesToHex(hashbytes);
+            }
         } catch (SQLException e) {  
             System.out.println(e.getMessage());  
         }
+        
+        if (!sha_256hex.isEmpty()) {
+            System.out.println(sha_256hex);
+        } else System.out.println("Is empty");
         
         return currUser;
     }
