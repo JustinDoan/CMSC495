@@ -140,7 +140,7 @@ public class DAO {
     public void insertReceipts( long card_num, double subTotal, double total, double tax,
             double discount, double cash, Date date) {
         String sql = "INSERT INTO receipts( card_num, sub_total, sales_tax,"
-                + " total, discount, cash_paid, change_due) VALUES(?,?,?,?,?,?,?)";
+                + " total, discount, cash_paid, dat_purchase) VALUES(?,?,?,?,?,?,?)";
         
         try{   
             PreparedStatement pstmt = conn.prepareStatement(sql);    

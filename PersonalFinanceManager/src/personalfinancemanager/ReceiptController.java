@@ -115,7 +115,7 @@ public class ReceiptController implements Initializable {
             date.valueOf(dateField.getValue());
         }
         catch (NumberFormatException n) {
-            JOptionPane.showMessageDialog(null, "Cash paid must be a number");
+            JOptionPane.showMessageDialog(null, "Date must be a date");
         }
         
         dao.insertReceipts(card_num, sub_total, total, sales_tax, discount, cash_paid, date);
