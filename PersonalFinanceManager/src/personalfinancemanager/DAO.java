@@ -123,6 +123,20 @@ public class DAO {
         }  
     }
     
+    public void insertUser(Date last_update, String user_name, String password) {  
+        String sql = "INSERT INTO accounts(last_update, user_name, password) VALUES(?,?,?)";  
+   
+        try{   
+            PreparedStatement pstmt = conn.prepareStatement(sql);  
+            pstmt.setDate(1, last_update);  
+            pstmt.setString(2, user_name);
+            pstmt.setString(3, password);
+            pstmt.executeUpdate();  
+        } catch (SQLException e) {  
+            System.out.println(e.getMessage());  
+        }  
+    }
+    
     public void insertCards( long account_num, long card_num, double balance) {
         String sql = "INSERT INTO cards(account_num, card_num, balance) VALUES(?,?,?)";
         

@@ -39,12 +39,11 @@ public class TransactionController implements Initializable {
     private ComboBox<String> recipientBox;
     @FXML
     private ComboBox<String> sourceBox;
+    private DAO dao;
     
     Stage enclosingStage;
     AccountManager manager;
-    /**
-     * Initializes the controller class.
-     */
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         ObservableList<String> list = FXCollections.observableArrayList("Deposit","Withdrawal","Transfer");
@@ -52,6 +51,8 @@ public class TransactionController implements Initializable {
         ObservableList<String> accountList = FXCollections.observableArrayList("A", "B", "C");
         recipientBox.setItems(accountList);
         sourceBox.setItems(accountList);
+        dao = new DAO();
+        dao.connect();
 
     }    
 
@@ -77,6 +78,7 @@ public class TransactionController implements Initializable {
     @FXML
     private void exit(ActionEvent event) {
         enclosingStage.close();
+        dao.closeDB();
     }
     
 }

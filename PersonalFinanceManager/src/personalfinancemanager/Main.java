@@ -19,7 +19,7 @@ import javafx.stage.Stage;
 
 
 public class Main extends Application {
-    protected static DAO dao = new DAO();
+    private static DAO dao = new DAO();
     
     public static void main(String[] args) {
         dao.connect();
