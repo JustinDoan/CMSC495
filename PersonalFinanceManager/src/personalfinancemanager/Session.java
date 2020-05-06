@@ -7,10 +7,10 @@ package personalfinancemanager;
 
 /**
  *
- * @author omt
+ * @author zach
  */
 public class Session {
-    private int uid;
+    private long uid;
     private boolean isAuthd;
     private User currentUser;
     
@@ -18,5 +18,13 @@ public class Session {
         this.uid = 0;
         this.isAuthd = false;
         this.currentUser = new User();
+    }
+    
+    public void setUID(long uid) {
+        this.uid = uid;
+    }
+    
+    public void setUser(User u) {
+        this.currentUser = u;
     }
 }

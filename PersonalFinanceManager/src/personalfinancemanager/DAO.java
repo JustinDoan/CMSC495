@@ -2,6 +2,7 @@
 
 package personalfinancemanager;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -18,6 +19,12 @@ import java.sql.ResultSet;
 
 //NEEDED FOR GETACCOUNTS:
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class DAO {
     
@@ -234,9 +241,7 @@ public class DAO {
     
     public User login (String un, String pw) {
         User currUser = new User();
-        LocalDateTime now = LocalDateTime.now();
-        //String salt = now.toString();
-        String sql = "SELECT id, user_name, last_update, password, email_address, phone_num FROM users WHERE user_name = ?;"; // AND password = ?;";
+        String sql = "SELECT id, user_name, last_update, password, email_address, phone_num FROM users WHERE user_name = ?;";
         int numResults = 0;
         ResultSet result;
         String sha_256hex = "";
@@ -253,12 +258,13 @@ public class DAO {
         try{   
             PreparedStatement pstmt = conn.prepareStatement(sql); 
             pstmt.setString(1, un);
-            //pstmt.setString(2, sha3_256hex);
             result = pstmt.executeQuery();
             while (result.next()) {
                 numResults++;
                 if(numResults > 1) {
-                    //TODO should not happen since user_name is unique
+                    //should not happen since user_name is unique
+                    this.warnDialog("Error","There is a problem with the database. Please contact your administrator.");
+                    result = null;
                     break;
                 }
                 String userID = result.getString("id");
@@ -273,17 +279,17 @@ public class DAO {
                 
                 sha_256hex = bytesToHex(hashbytes);
                 
-                if(sha_256hex.compareTo(password) == 0) {
-                    System.out.println("Authentication successful!"); //TODO-replace with dialog
-                } else System.out.println("Authentication failed."); //TODO-replace with dialog
+                if(sha_256hex.compareTo(password) == 0) this.warnDialog("Authentication successful.");
+                else this.warnDialog("Authentication failed.");
             }
+            
+            if(!pw.isEmpty() && numResults<1) this.warnDialog("Please provide a valid user name.");
+            //empty input is handled in the invoking function
+            
         } catch (SQLException e) {  
-            System.out.println(e.getMessage()); //TODO-replace with dialog
+            Logger.getLogger(WarningController.class.getName()).log(Level.SEVERE, null, e);
+            this.warnDialog("Error","There was a problem communicating with the database. Please contact your administrator.");
         }
-        
-        if (!sha_256hex.isEmpty()) {
-            System.out.println(sha_256hex);
-        } else System.out.println("Please provide a valid user name."); //TODO-replace with dialog
         
         return currUser;
     }
@@ -297,19 +303,24 @@ public class DAO {
         ResultSet result;
         ArrayList<Long> accts = new ArrayList<Long>();
         
-        try{   
-            PreparedStatement pstmt = conn.prepareStatement(sql); 
+        try{
+            PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, uid);
-            //pstmt.setString(2, sha3_256hex);
             result = pstmt.executeQuery();
             while (result.next()) {
                 numResults++;
             }
-        } catch (SQLException e) {  
+        } catch (SQLException e) {
             System.out.println(e.getMessage()); //TODO-replace with dialog
         }
         
         return accts;
+    }
+    
+    public ArrayList<Long> getCards (int ait) {
+        ArrayList<Long> cards = new ArrayList<Long>();
+        
+        return cards;
     }
     
     //Source: https://www.baeldung.com/sha-256-hashing-java
@@ -321,5 +332,29 @@ public class DAO {
             hexString.append(hex);
         }
         return hexString.toString();
+    }
+    
+    public void warnDialog(String message, String details) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Warning.fxml"));
+            Scene scene = new Scene(loader.load());
+            WarningController warningController = loader.getController();
+            Stage warningStage = new Stage();
+            warningStage.setTitle("Warning");
+            warningStage.setScene(scene);
+            warningStage.initModality(Modality.APPLICATION_MODAL);
+            warningStage.setAlwaysOnTop(true);
+            warningStage.setResizable(false);
+            //TODO hide this menu during warning
+            //warningController.enclosingStage = warningStage; //DNE
+            warningController.setMsg(message, details);
+            warningStage.show();
+        } catch (IOException ex) {
+            Logger.getLogger(WarningController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void warnDialog(String details) {
+        this.warnDialog("Warning",details);
     }
 }

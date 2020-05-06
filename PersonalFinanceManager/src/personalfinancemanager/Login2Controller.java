@@ -19,7 +19,7 @@ import javafx.application.Application;
 /**
  * FXML Controller class
  *
- * @author omt
+ * @author zach
  */
 public class Login2Controller implements Initializable {
 
@@ -46,7 +46,6 @@ public class Login2Controller implements Initializable {
     private void submit(ActionEvent event) {
         String unInput, pwInput, username, password;
         
-        //*
         if ((userNameField.getText() != null && !userNameField.getText().isEmpty()) && 
             (passwordField.getText() != null && !passwordField.getText().isEmpty())) {
                 unInput = userNameField.getText();
@@ -54,14 +53,9 @@ public class Login2Controller implements Initializable {
                 username = unInput.trim();
                 password = pwInput.trim();
         
-                if (!username.matches("[\\w*\\s*[!@#$%^&*()]*]*") || username.isEmpty()) {
-                    //TODO
-                    System.out.println("Bad user!");
-                } 
-        } else {
-            //TODO
-            Platform.exit();
-        } //*/
+                if (!username.matches("[\\w*\\s*[!@#$%^&\\*()]*]*")) dao.warnDialog("The only acceptable characters are letters, numbers and symbols.");
+                else dao.login(username,password);
+        } else dao.warnDialog("Please enter user name and password.");
     }
 
     @FXML
