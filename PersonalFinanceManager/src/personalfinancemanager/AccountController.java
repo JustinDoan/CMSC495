@@ -40,9 +40,9 @@ public class AccountController implements Initializable {
 
     @FXML
     private void submit(ActionEvent event) {
+        /*
         long accountNumber = 0;
         long routingNumber = 0;
-        double balance = 0;
         
         //TODO: Add proper validation
         try{
@@ -57,6 +57,12 @@ public class AccountController implements Initializable {
         catch (NumberFormatException n) {
             JOptionPane.showMessageDialog(null, "Routing Number must be a number");
         }
+        //*/
+        
+        String accountNumber = accountNumberField.getText();
+        String routingNumber = routingNumberField.getText();
+        double balance = 0;
+
         try{
             balance = Double.parseDouble(balanceField.getText());
         }

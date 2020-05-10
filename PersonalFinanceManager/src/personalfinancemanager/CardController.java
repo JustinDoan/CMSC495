@@ -39,9 +39,9 @@ public class CardController implements Initializable {
 
     @FXML
     private void submit(ActionEvent event) {
+        /*
         long account_num = 0;
         long card_num = 0;
-        double balance = 0;
         
         try{
             account_num = Long.parseLong(accountNumberField.getText());
@@ -54,7 +54,12 @@ public class CardController implements Initializable {
         }
         catch (NumberFormatException n) {
             JOptionPane.showMessageDialog(null, "Card Number must be a number");
-        }
+        } //*/
+        
+        String account_num = accountNumberField.getText();
+        String card_num = cardNumberField.getText();
+        double balance = 0D;
+        
         try{
             balance = Double.parseDouble(balanceField.getText());
         }

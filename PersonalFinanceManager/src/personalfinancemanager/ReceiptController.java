@@ -62,15 +62,9 @@ public class ReceiptController implements Initializable {
 
     @FXML
     private void submit(ActionEvent event) {
-        String card_id = null;
+        /*
         long card_num = 0;
-        double sub_total = 0;
-        double sales_tax = 0;
-        double total = 0;
-        double discount = 0;
-        double cash_paid = 0;
-        Date date = null;
-        
+
         try{
             card_num = Long.parseLong(cardBox.getValue().toString());
         }
@@ -78,6 +72,18 @@ public class ReceiptController implements Initializable {
             Main.showAlert(DialogTypes.NAN, "Card Number");
             return;
         }
+        //*/
+        
+        String card_num = cardBox.getValue().toString();
+        
+        String card_id = null;
+        double sub_total = 0;
+        double sales_tax = 0;
+        double total = 0;
+        double discount = 0;
+        double cash_paid = 0;
+        Date date = null;
+        
         try{
             sub_total = Double.parseDouble(subtotalField.getText());
         }

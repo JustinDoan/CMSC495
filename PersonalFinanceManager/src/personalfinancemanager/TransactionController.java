@@ -68,41 +68,53 @@ public class TransactionController implements Initializable {
     }
     @FXML
     private void submit(ActionEvent event) {
+        //long accountFrom = 0;
+        //long accountTo = 0;
+        
+        String accountFrom, accountTo;
+        
         double amount = 0;
         String transactionType = transactionBox.getValue();
-        long accountTo = 0;
-        long accountFrom = 0;
         String Comment = commentField.getText();
          
         try{
             amount = Double.parseDouble(amountField.getText());
         }
         catch (NumberFormatException n) {
-            JOptionPane.showMessageDialog(null, "");
+            Main.showAlert(DialogTypes.NAN,null);
             return;
         }
         
         if(transactionType.equals("Deposit")){
+            /*
             try{
                 accountTo = Long.parseLong(recipientBox.getValue());
             }
             catch (NumberFormatException n) {
                 JOptionPane.showMessageDialog(null, "Must choose an account");
                 return;
-            }
+            } //*/
+            
+            accountTo = recipientBox.getValue();
+            
             DAO.shared.insertDeposits(accountTo, amount);
         }
         else if(transactionType.equals("Withdrawal")){
+            /*
             try{
                 accountFrom = Long.parseLong(sourceBox.getValue());
             }
             catch (NumberFormatException n) {
                 JOptionPane.showMessageDialog(null, "Must choose an account");
                 return;
-            }
+            } //*/
+            
+            accountFrom = sourceBox.getValue();
+            
             DAO.shared.insertWithdrawals(accountFrom, amount);
         }
         else {
+            /*
             try{
                 accountTo = Long.parseLong(recipientBox.getValue());
             }
@@ -116,12 +128,17 @@ public class TransactionController implements Initializable {
             catch (NumberFormatException n) {
                 JOptionPane.showMessageDialog(null, "Must choose an account");
                 return;
-            }
+            } //*/
+            
+            accountTo = recipientBox.getValue();
+            accountFrom = sourceBox.getValue();
+            
             DAO.shared.insertTransfers(accountTo, accountFrom, amount);
+
+            //Main.showAlert(DialogTypes.INVALIDFIELD,null);
         }
         
         //manager.transaction(transactionType, Long.parseLong(sourceBox.getValue()), Long.parseLong(recipientBox.getValue()), amount);
-
         
     }
 
