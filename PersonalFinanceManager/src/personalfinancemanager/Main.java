@@ -44,6 +44,7 @@ public class Main extends Application {
     }
     public static void showAlert(DialogTypes type){
         Alert alert = new Alert(Alert.AlertType.ERROR);
+        ((Stage) alert.getDialogPane().getScene().getWindow()).setAlwaysOnTop(true);
         alert.setHeaderText(null);
 
         switch(type){
@@ -60,7 +61,7 @@ public class Main extends Application {
                 alert.setContentText("The only acceptable characters are letters, numbers and symbols.");
                 break;
             case SUCCESS:
-                alert.setAlertType(Alert.AlertType.CONFIRMATION);
+                alert.setAlertType(Alert.AlertType.INFORMATION);
                 alert.setTitle("Authentication Successful");
                 alert.setContentText("Welcome to Personal Finance Manager!");
                 break;
