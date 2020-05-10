@@ -77,6 +77,10 @@ public class Main extends Application {
                 alert.setTitle("Database Connection Error");
                 alert.setContentText("There is a problem with the database. Please contact your administrator.");
                 break;
+            case COMBOBOX:
+                alert.setTitle("Selection Error");
+                alert.setContentText("Please make a valid selection for" + invalidFieldName + ".");
+                break;
         }
         alert.showAndWait();
     }
@@ -90,5 +94,5 @@ enum DialogTypes{
         SUCCESS,
         FAILURE,
         DBERROR,
-        
+        COMBOBOX,        
     };

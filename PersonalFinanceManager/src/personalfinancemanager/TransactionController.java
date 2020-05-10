@@ -81,16 +81,18 @@ public class TransactionController implements Initializable {
         
         double amount = 0;
         String transactionType = transactionBox.getValue();
-        String Comment = commentField.getText();
-         
+        String comment = commentField.getText();
+        if(transactionBox.getSelectionModel().isEmpty()){
+            Main.showAlert(DialogTypes.COMBOBOX,"Transaction");
+           return;
+        }
         try{
             amount = Double.parseDouble(amountField.getText());
         }
         catch (NumberFormatException n) {
-            Main.showAlert(DialogTypes.NAN,null);
+            Main.showAlert(DialogTypes.NAN,"Amount");
             return;
         }
-        
         if(transactionType.equals("Deposit")){
             /*
             try{
@@ -119,7 +121,7 @@ public class TransactionController implements Initializable {
             
             DAO.shared.insertWithdrawals(accountFrom, amount);
         }
-        else {
+        else if(transactionType.equals("Transfer")){
             /*
             try{
                 accountTo = Long.parseLong(recipientBox.getValue());
@@ -143,7 +145,7 @@ public class TransactionController implements Initializable {
 
             //Main.showAlert(DialogTypes.INVALIDFIELD,null);
         }
-        
+        enclosingStage.close();
         //manager.transaction(transactionType, Long.parseLong(sourceBox.getValue()), Long.parseLong(recipientBox.getValue()), amount);
         
     }

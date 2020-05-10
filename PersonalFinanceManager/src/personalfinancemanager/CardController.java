@@ -64,10 +64,12 @@ public class CardController implements Initializable {
             balance = Double.parseDouble(balanceField.getText());
         }
         catch (NumberFormatException n) {
-            JOptionPane.showMessageDialog(null, "Balance must be a number");
+            Main.showAlert(DialogTypes.NAN, "Balance");
+            return;
         }
         
         DAO.shared.insertCards(account_num, card_num, balance);
+        enclosingStage.close();
     }
 
     @FXML

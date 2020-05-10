@@ -73,6 +73,15 @@ public class ReceiptController implements Initializable {
             return;
         }
         //*/
+        if(accountBox.getSelectionModel().isEmpty()){
+            Main.showAlert(DialogTypes.COMBOBOX,"Account");
+           return;
+        }
+        
+        else if(cardBox.getSelectionModel().isEmpty()){
+            Main.showAlert(DialogTypes.COMBOBOX,"Card");
+           return;
+        }
         
         String card_num = cardBox.getValue().toString();
         
@@ -128,6 +137,7 @@ public class ReceiptController implements Initializable {
         }
         
         DAO.shared.insertReceipts(card_num, sub_total, total, sales_tax, discount, cash_paid, date);
+        enclosingStage.close();
     }
 
     @FXML
