@@ -11,7 +11,7 @@ import java.sql.Statement;
 import java.sql.PreparedStatement;
 
 //NEEDED FOR LOGIN:
-import java.time.LocalDateTime;    
+import java.time.LocalDateTime;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.nio.charset.StandardCharsets;
@@ -35,25 +35,25 @@ public class DAO {
     public void connect() {
         String url = "jdbc:sqlite:./PFM.db";
 
-        try {  
+        try {
             conn = DriverManager.getConnection(url);
             createNewTables();
-            
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        } 
+        }
     }
-    
-     private void createNewTables() {    
+
+     private void createNewTables() {
         String[] tables = new String[7];
-         
-        tables[0] = "CREATE TABLE IF NOT EXISTS accounts (\n"  
-                + " id INTEGER PRIMARY KEY AUTOINCREMENT, \n"  
-                + " account_num TEXT UNIQUE, \n" 
+
+        tables[0] = "CREATE TABLE IF NOT EXISTS accounts (\n"
+                + " id INTEGER PRIMARY KEY AUTOINCREMENT, \n"
+                + " account_num TEXT UNIQUE, \n"
                 + " routing_num TEXT, \n"
                 + " balance REAL\n"
-                + ");";  
-        
+                + ");";
+
         tables[1] = "CREATE TABLE IF NOT EXISTS cards (\n"
                 + " id INTEGER PRIMARY KEY AUTOINCREMENT, \n"
                 + " account_id INTEGER NOT NULL, \n"
@@ -61,7 +61,7 @@ public class DAO {
                 + " balance REAL, \n"
                 + " FOREIGN KEY (account_id) REFERENCES accounts (id)\n"
                 + ");";
-        
+
         tables[2] = "CREATE TABLE IF NOT EXISTS receipts (\n"
                 + " _id INTEGER PRIMARY KEY AUTOINCREMENT, \n"
                 + " card_num TEXT, \n"
@@ -73,7 +73,7 @@ public class DAO {
                 + " dat_purchase DATE, \n"
                 + " FOREIGN KEY (card_num) REFERENCES cards (id)\n"
                 + ");";
-        
+
         tables[3] = "CREATE TABLE IF NOT EXISTS users (\n"
                 + " id INTEGER PRIMARY KEY AUTOINCREMENT, \n"
                 + " last_update TEXT NOT NULL, \n"
@@ -82,14 +82,14 @@ public class DAO {
                 + " email_address TEXT, \n"
                 + " phone_num TEXT \n"
                 + ");";
-        
+
         tables[4] = "CREATE TABLE IF NOT EXISTS users_to_accounts (\n"
                 + " user_id INTEGER NOT NULL, \n"
                 + " account_id INTEGER NOT NULL, \n"
                 + " FOREIGN KEY (user_id) REFERENCES users (id), \n"
                 + " FOREIGN KEY (account_id) REFERENCES accounts (id)\n"
                 + ");";
-        
+
         tables[5] = "CREATE TABLE IF NOT EXISTS deposits (\n"
                 + " id INTEGER PRIMARY KEY AUTOINCREMENT, \n"
                 + " source_account_id TEXT, \n"
@@ -98,7 +98,7 @@ public class DAO {
                 + " FOREIGN KEY (source_account_id) REFERENCES accounts (id), \n"
                 + " FOREIGN KEY (dest_account_id) REFERENCES accounts (id)\n"
                 + ");";
-        
+
         tables[6] = "CREATE TABLE IF NOT EXISTS withdrawals (\n"
                 + " id INTEGER PRIMARY KEY AUTOINCREMENT, \n"
                 + " source_account_id TEXT NOT NULL, \n"
@@ -107,137 +107,137 @@ public class DAO {
                 + " FOREIGN KEY (source_account_id) REFERENCES accounts (id), \n"
                 + " FOREIGN KEY (dest_account_id) REFERENCES accounts (id)\n"
                 + ");";
-        
-        try{   
+
+        try{
             Statement stmt = conn.createStatement();
             for(int i = 0; i < 7; i++){
                 stmt.execute(tables[i]);
             }
 
-        } catch (SQLException e) {  
-            System.out.println(e.getMessage());  
-        }  
+        } catch (SQLException e) {
+            Logger.getLogger(WarningController.class.getName()).log(Level.SEVERE, null, e);
+            Main.showAlert(DialogTypes.DBERROR,null);
+        }
     }
-     
+
     public void closeDB() {
         try {
             if (conn != null) {
                 conn.close();
-            }  
-        } catch (SQLException ex) {  
-            System.out.println(ex.getMessage());  
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(WarningController.class.getName()).log(Level.SEVERE, null, ex);
+            Main.showAlert(DialogTypes.DBERROR,null);
         }
     }
-    
-    public void insertAccount(String account_num, String routing_num, double balance) {  
-        String sql = "INSERT INTO accounts(account_num, routing_num, balance) VALUES(?,?,?)";  
-   
-        try{   
-            PreparedStatement pstmt = conn.prepareStatement(sql);  
-            pstmt.setString(1, account_num);  
+
+    public void insertAccount(String account_num, String routing_num, double balance) {
+        String sql = "INSERT INTO accounts(account_num, routing_num, balance) VALUES(?,?,?)";
+
+        try{
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, account_num);
             pstmt.setString(2, routing_num);
             pstmt.setDouble(3, balance);
-            pstmt.executeUpdate();  
-        } catch (SQLException e) {  
-            System.out.println(e.getMessage());  
-        }  
-    }
-    
-    public void insertUser(String last_update, String user_name, String password) {  
-        String sql = "INSERT INTO users(last_update, user_name, password) VALUES(?,?,?)";  
-        final MessageDigest digest;
-        try {
-            digest = MessageDigest.getInstance("SHA-256");
-        } catch (NoSuchAlgorithmException nsa) {
-        	// handle failure
-            return;
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            Logger.getLogger(WarningController.class.getName()).log(Level.SEVERE, null, e);
+            Main.showAlert(DialogTypes.DBERROR,null);
         }
-        String saltedPW = password.concat(last_update.toString());
-        byte[] hashbytes = digest.digest(saltedPW.getBytes(StandardCharsets.UTF_8));
-        String sha_256hex = bytesToHex(hashbytes);  
-        try{   
-            PreparedStatement pstmt = conn.prepareStatement(sql);  
+    }
+
+    public void insertUser(String last_update, String user_name, String password) {
+        String sql = "INSERT INTO users(last_update, user_name, password) VALUES(?,?,?)";
+
+        try{
+            PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, last_update);
             pstmt.setString(2, user_name);
-            pstmt.setString(3, sha_256hex);
-            pstmt.executeUpdate();  
-        } catch (SQLException e) {  
-            System.out.println(e.getMessage());  
-        }  
+            pstmt.setString(3, password);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            Logger.getLogger(WarningController.class.getName()).log(Level.SEVERE, null, e);
+            Main.showAlert(DialogTypes.DBERROR,null);
+        }
     }
-    
+
     public void insertCards( String account_num, String card_num, double balance) {
         String sql = "INSERT INTO cards(account_num, card_num, balance) VALUES(?,?,?)";
-        
-        try{   
-            PreparedStatement pstmt = conn.prepareStatement(sql);    
+
+        try{
+            PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, account_num);
             pstmt.setString(2, card_num);
             pstmt.setDouble(3, balance);
-            pstmt.executeUpdate();  
-        } catch (SQLException e) {  
-            System.out.println(e.getMessage());  
-        }  
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            Logger.getLogger(WarningController.class.getName()).log(Level.SEVERE, null, e);
+            Main.showAlert(DialogTypes.DBERROR,null);
+        }
     }
-    
+
     public void insertDeposits(String destination_account, double amount) {
         String sql = "INSERT INTO deposits(dest_account_id, amount) VALUES(?,?)";
-        
-        try{   
-            PreparedStatement pstmt = conn.prepareStatement(sql);    
+
+        try{
+            PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, destination_account);
             pstmt.setDouble(2, amount);
-            pstmt.executeUpdate();  
-        } catch (SQLException e) {  
-            System.out.println(e.getMessage());  
-        }  
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            Logger.getLogger(WarningController.class.getName()).log(Level.SEVERE, null, e);
+            Main.showAlert(DialogTypes.DBERROR,null);
+        }
     }
-    
+
     public void insertWithdrawals(String source_account, double amount) {
         String sql = "INSERT INTO withdrawals(source_account_id, amount) VALUES(?,?)";
-        
-        try{   
-            PreparedStatement pstmt = conn.prepareStatement(sql);    
+
+        try{
+            PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, source_account);
             pstmt.setDouble(2, -amount);
             pstmt.executeUpdate();
-        } catch (SQLException e) {  
-            System.out.println(e.getMessage());  
-        }  
+        } catch (SQLException e) {
+            Logger.getLogger(WarningController.class.getName()).log(Level.SEVERE, null, e);
+            Main.showAlert(DialogTypes.DBERROR,null);
+        }
     }
-    
+
     //*
     public void insertTransfers(String source_account, String destination_account, double amount) {
         String sql1 = "INSERT INTO withdrawals(source_account_id, amount) VALUES(?,?)";
-        
-        try{   
-            PreparedStatement pstmt = conn.prepareStatement(sql1);    
+
+        try{
+            PreparedStatement pstmt = conn.prepareStatement(sql1);
             pstmt.setString(1, source_account);
             pstmt.setDouble(2, -amount);
-            pstmt.executeUpdate();  
-        } catch (SQLException e) {  
-            System.out.println(e.getMessage());  
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            Logger.getLogger(WarningController.class.getName()).log(Level.SEVERE, null, e);
+            Main.showAlert(DialogTypes.DBERROR,null);
         }
-        
+
         String sql2 = "INSERT INTO deposits(dest_account_id, amount) VALUES(?,?)";
-        
-        try{   
-            PreparedStatement pstmt = conn.prepareStatement(sql2);    
+
+        try{
+            PreparedStatement pstmt = conn.prepareStatement(sql2);
             pstmt.setString(1, destination_account);
             pstmt.setDouble(2, amount);
-            pstmt.executeUpdate();  
-        } catch (SQLException e) {  
-            System.out.println(e.getMessage());  
-        }  
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            Logger.getLogger(WarningController.class.getName()).log(Level.SEVERE, null, e);
+            Main.showAlert(DialogTypes.DBERROR,null);
+        }
     } //*/
-    
+
     public void insertReceipts( String card_num, double subTotal, double total, double tax,
             double discount, double cash, Date date) {
         String sql = "INSERT INTO receipts( card_num, sub_total, sales_tax,"
                 + " total, discount, cash_paid, dat_purchase) VALUES(?,?,?,?,?,?,?)";
-        
-        try{   
-            PreparedStatement pstmt = conn.prepareStatement(sql);    
+
+        try{
+            PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, card_num);
             pstmt.setDouble(2, subTotal);
             pstmt.setDouble(3, tax);
@@ -245,21 +245,22 @@ public class DAO {
             pstmt.setDouble(5, discount);
             pstmt.setDouble(6, cash);
             pstmt.setDate(7, date);
-            pstmt.executeUpdate();  
-        } catch (SQLException e) {  
-            System.out.println(e.getMessage());  
-        }  
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            Logger.getLogger(WarningController.class.getName()).log(Level.SEVERE, null, e);
+            Main.showAlert(DialogTypes.DBERROR,null);
+        }
     }
-    
+
     public User login (String un, String pw) {
         User currUser = new User();
         String sql = "SELECT id, user_name, last_update, password, email_address, phone_num FROM users WHERE user_name = ?;";
         int numResults = 0;
         ResultSet result;
         String sha_256hex = "";
-        
+
         shared.connect();
-        
+
         final MessageDigest digest;
         try {
             digest = MessageDigest.getInstance("SHA-256");
@@ -268,9 +269,9 @@ public class DAO {
             //TODO
             return null;
         }
-        
-        try{   
-            PreparedStatement pstmt = conn.prepareStatement(sql); 
+
+        try{
+            PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, un);
             result = pstmt.executeQuery();
             while (result.next()) {
@@ -287,75 +288,93 @@ public class DAO {
                 String password = result.getString("password");
                 String emailAddr = result.getString("email_address");
                 String phoneNum = result.getString("phone_num");
-                
+
                 String saltedPW = pw.concat(lastUpdate);
                 byte[] hashbytes = digest.digest(saltedPW.getBytes(StandardCharsets.UTF_8));
-                
+
                 sha_256hex = bytesToHex(hashbytes);
-                
+
                 if(sha_256hex.compareTo(password) == 0) {
                     Main.showAlert(DialogTypes.SUCCESS,null);
-                    //shared.getAccounts(userID); //T/S
+                    shared.getAccounts(userID); //T/S
                 }
                 else Main.showAlert(DialogTypes.FAILURE,null);
             }
-            
+
             if(!pw.isEmpty() && numResults<1) Main.showAlert(DialogTypes.USERNAME,null);
             //empty input is handled in the invoking function
-            
-        } catch (SQLException e) {  
+
+        } catch (SQLException e) {
             Logger.getLogger(WarningController.class.getName()).log(Level.SEVERE, null, e);
             Main.showAlert(DialogTypes.DBERROR,null);
         }
-        
+
         shared.closeDB();
         return currUser;
     }
-    
+
     public ArrayList<String> getAccounts (int uid) {
         int numResults = 0;
         String sql = "SELECT account_id FROM users_to_accounts WHERE user_id = ?;";
         ResultSet result;
         ArrayList<Integer> accts = new ArrayList<Integer>();
         ArrayList<String> acctNums = new ArrayList<String>();
-        
+
         shared.connect();
-        
+
         try{
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, uid);
             result = pstmt.executeQuery();
-            //*
             while (result.next()) {
                 numResults++;
                 accts.add(result.getInt("account_id"));
             }
-            //accts.add(result.getInt("account_id")); //*/
         } catch (SQLException e) {
-            
             Logger.getLogger(WarningController.class.getName()).log(Level.SEVERE, null, e);
             Main.showAlert(DialogTypes.DBERROR,null);
         }
-        
-        //*
-        String tempSQL = "SELECT account_num FROM accounts WHERE ";
+
+        numResults = 0;
+        sql = "SELECT account_num FROM accounts WHERE ";
         Enumeration<Integer> eAccts = Collections.enumeration(accts);
         while(eAccts.hasMoreElements()) {
-            sql = tempSQL.concat(String.format("id=$s OR ", eAccts.nextElement()));
+            sql = sql.concat(String.format("id=%s ", eAccts.nextElement()));
+            if(eAccts.hasMoreElements()) sql = sql.concat("OR ");
+            else sql = sql.concat(";");
         } //*/
-        
-        //System.out.println(sql); //T/S
-        
+
+        try{
+            Statement stmt = conn.createStatement();
+            result = stmt.executeQuery(sql);
+            while (result.next()) {
+                numResults++;
+                acctNums.add(result.getString("account_num"));
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(WarningController.class.getName()).log(Level.SEVERE, null, e);
+            Main.showAlert(DialogTypes.DBERROR,null);
+        }
+
+
+        /* TROUBLESHOOTING
+        System.out.println(sql);
+        Enumeration<String> eAcctNums = Collections.enumeration(acctNums);
+        while(eAcctNums.hasMoreElements()) {
+            System.out.println(eAcctNums.nextElement());
+        } //*/
+
+
         shared.closeDB();
         return acctNums;
     }
-    
+
     public ArrayList<Long> getCards (int ait) {
         ArrayList<Long> cards = new ArrayList<Long>();
-        
+
         return cards;
     }
-    
+
     //Source: https://www.baeldung.com/sha-256-hashing-java
     private static String bytesToHex(byte[] hash) {
         StringBuffer hexString = new StringBuffer();
@@ -366,7 +385,7 @@ public class DAO {
         }
         return hexString.toString();
     }
-    
+
     /*
     public void warnDialog(String message, String details) {
         try {
@@ -387,7 +406,7 @@ public class DAO {
             Logger.getLogger(WarningController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void warnDialog(String details) {
         this.warnDialog("Warning",details);
     } //*/
