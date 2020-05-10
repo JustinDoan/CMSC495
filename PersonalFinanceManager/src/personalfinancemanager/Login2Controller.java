@@ -59,12 +59,15 @@ public class Login2Controller implements Initializable {
                 pwInput = passwordField.getText();
                 username = unInput.trim();
                 password = pwInput.trim();
+                
+                User currUser;
         
                 if (!username.matches("[\\w*\\s*[!@#$%^&\\*()]*]*")) {
                 	Main.showAlert(DialogTypes.INVALIDCHARACTERS,null);
                 } else {
                 	// Set session
-                	DAO.shared.login(username,password);
+                        currUser = DAO.shared.login(username,password);
+                        if (currUser == null) return;
                 	try {
         	            FXMLLoader loader = new FXMLLoader(getClass().getResource("MainMenu.fxml"));
         	            Scene scene = new Scene(loader.load(), 480, 320);

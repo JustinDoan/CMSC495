@@ -252,7 +252,7 @@ public class DAO {
     }
     
     public User login (String un, String pw) {
-        User currUser = new User();
+        User currUser = null;
         String sql = "SELECT id, user_name, last_update, password, email_address, phone_num FROM users WHERE user_name = ?;";
         int numResults = 0;
         ResultSet result;
@@ -295,6 +295,7 @@ public class DAO {
                 
                 if(sha_256hex.compareTo(password) == 0) {
                     Main.showAlert(DialogTypes.SUCCESS,null);
+                    currUser = new User();
                     currUser.setName(userName);
                     //shared.getAccounts(userID); //T/S
                 }
