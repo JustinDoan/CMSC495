@@ -57,13 +57,19 @@ public class TransactionController implements Initializable {
 
     @FXML
     private void transactionDidChange(ActionEvent event){
-        if(transactionBox.getValue().equals("Transfer")){
-            sourceBox.setDisable(false);
-            recipientBox.setDisable(false);
-        }
-        else{
-           sourceBox.setDisable(true);
-           recipientBox.setDisable(true); 
+        switch (transactionBox.getValue()) {
+            case "Transfer":
+                sourceBox.setDisable(false);
+                recipientBox.setDisable(false);
+                break;
+            case "Deposit":
+                sourceBox.setDisable(true);
+                recipientBox.setDisable(false);
+                break;
+            case "Withdrawal":
+                sourceBox.setDisable(false); 
+                recipientBox.setDisable(true);
+                break;
         }
     }
     @FXML
