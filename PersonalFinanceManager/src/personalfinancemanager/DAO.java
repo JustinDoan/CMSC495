@@ -295,7 +295,8 @@ public class DAO {
                 
                 if(sha_256hex.compareTo(password) == 0) {
                     Main.showAlert(DialogTypes.SUCCESS,null);
-                    shared.getAccounts(userID); //T/S
+                    currUser.setName(userName);
+                    //shared.getAccounts(userID); //T/S
                 }
                 else Main.showAlert(DialogTypes.FAILURE,null);
             }
@@ -356,7 +357,7 @@ public class DAO {
         }
 
 
-        //* TROUBLESHOOTING
+        /* TROUBLESHOOTING
         System.out.println(sql);
         Enumeration<String> eAcctNums = Collections.enumeration(acctNums);
         while(eAcctNums.hasMoreElements()) {

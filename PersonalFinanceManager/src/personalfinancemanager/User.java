@@ -35,5 +35,13 @@ public class User {
         return null;
         
     }
-    
+    public void setName(String un) {
+        this.name = un;
+    }
+    public void setAddr(String ea) {
+        this.address = ea;
+    }
+    public void setPhone(String pn) {
+        this.phone = pn;
+    }
 }
