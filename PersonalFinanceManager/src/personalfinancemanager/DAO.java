@@ -56,7 +56,7 @@ public class DAO {
         
         tables[1] = "CREATE TABLE IF NOT EXISTS cards (\n"
                 + " id INTEGER PRIMARY KEY AUTOINCREMENT, \n"
-                + " account_id NUMBER NOT NULL, \n"
+                + " account_id INTEGER NOT NULL, \n"
                 + " card_num TEXT UNIQUE, \n"
                 + " balance REAL, \n"
                 + " FOREIGN KEY (account_id) REFERENCES accounts (id)\n"
@@ -80,12 +80,12 @@ public class DAO {
                 + " user_name TEXT NOT NULL UNIQUE, \n"
                 + " password TEXT NOT NULL, \n"
                 + " email_address TEXT, \n"
-                + " phone_num NUMBER \n"
+                + " phone_num TEXT \n"
                 + ");";
         
         tables[4] = "CREATE TABLE IF NOT EXISTS users_to_accounts (\n"
-                + " user_id NUMBER NOT NULL, \n"
-                + " account_id NUMBER NOT NULL, \n"
+                + " user_id INTEGER NOT NULL, \n"
+                + " account_id INTEGER NOT NULL, \n"
                 + " FOREIGN KEY (user_id) REFERENCES users (id), \n"
                 + " FOREIGN KEY (account_id) REFERENCES accounts (id)\n"
                 + ");";
@@ -286,7 +286,7 @@ public class DAO {
                 
                 if(sha_256hex.compareTo(password) == 0) {
                     Main.showAlert(DialogTypes.SUCCESS,null);
-                    //shared.getAccounts(userID); //T/S
+                    shared.getAccounts(userID); //T/S
                 }
                 else Main.showAlert(DialogTypes.FAILURE,null);
             }
@@ -315,11 +315,12 @@ public class DAO {
         try{
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, uid);
+            /*
             result = pstmt.executeQuery();
             while (result.next()) {
                 numResults++;
             }
-            accts.add(result.getString("account_id"));
+            accts.add(result.getString("account_id")); //*/
         } catch (SQLException e) {
             
             Logger.getLogger(WarningController.class.getName()).log(Level.SEVERE, null, e);
