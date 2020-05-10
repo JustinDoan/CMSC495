@@ -286,7 +286,7 @@ public class DAO {
                 
                 if(sha_256hex.compareTo(password) == 0) {
                     Main.showAlert(DialogTypes.SUCCESS,null);
-                    shared.getAccounts(userID); //T/S
+                    //shared.getAccounts(userID); //T/S
                 }
                 else Main.showAlert(DialogTypes.FAILURE,null);
             }
@@ -305,9 +305,9 @@ public class DAO {
     
     public ArrayList<String> getAccounts (int uid) {
         int numResults = 0;
-        String sql = "select account_id from users_to_accounts where user_id=?;";
+        String sql = "SELECT account_id FROM users_to_accounts WHERE user_id = ?;";
         ResultSet result;
-        ArrayList<String> accts = new ArrayList<String>();
+        ArrayList<Integer> accts = new ArrayList<Integer>();
         ArrayList<String> acctNums = new ArrayList<String>();
         
         shared.connect();
@@ -315,28 +315,30 @@ public class DAO {
         try{
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, uid);
-            /*
             result = pstmt.executeQuery();
+            //*
             while (result.next()) {
                 numResults++;
+                accts.add(result.getInt("account_id"));
             }
-            accts.add(result.getString("account_id")); //*/
+            //accts.add(result.getInt("account_id")); //*/
         } catch (SQLException e) {
             
             Logger.getLogger(WarningController.class.getName()).log(Level.SEVERE, null, e);
             Main.showAlert(DialogTypes.DBERROR,null);
         }
         
-        String tempSQL = "select account_num from accounts where ";
-        Enumeration<String> eAccts = Collections.enumeration(accts);
+        //*
+        String tempSQL = "SELECT account_num FROM accounts WHERE ";
+        Enumeration<Integer> eAccts = Collections.enumeration(accts);
         while(eAccts.hasMoreElements()) {
             sql = tempSQL.concat(String.format("id=$s OR ", eAccts.nextElement()));
-        }
+        } //*/
         
-        System.out.println(sql); //T/S
+        //System.out.println(sql); //T/S
         
         shared.closeDB();
-        return accts;
+        return acctNums;
     }
     
     public ArrayList<Long> getCards (int ait) {
