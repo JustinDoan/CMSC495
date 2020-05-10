@@ -295,7 +295,7 @@ public class DAO {
                 
                 if(sha_256hex.compareTo(password) == 0) {
                     Main.showAlert(DialogTypes.SUCCESS,null);
-                    //shared.getAccounts(userID); //T/S
+                    shared.getAccounts(userID); //T/S
                 }
                 else Main.showAlert(DialogTypes.FAILURE,null);
             }
@@ -312,40 +312,58 @@ public class DAO {
         return currUser;
     }
     
-    public ArrayList<String> getAccounts (int uid) {
+        public ArrayList<String> getAccounts (int uid) {
         int numResults = 0;
         String sql = "SELECT account_id FROM users_to_accounts WHERE user_id = ?;";
         ResultSet result;
         ArrayList<Integer> accts = new ArrayList<Integer>();
         ArrayList<String> acctNums = new ArrayList<String>();
-        
+
         shared.connect();
-        
+
         try{
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, uid);
             result = pstmt.executeQuery();
-            //*
             while (result.next()) {
                 numResults++;
                 accts.add(result.getInt("account_id"));
             }
-            //accts.add(result.getInt("account_id")); //*/
         } catch (SQLException e) {
-            
             Logger.getLogger(WarningController.class.getName()).log(Level.SEVERE, null, e);
             Main.showAlert(DialogTypes.DBERROR,null);
         }
-        
-        //*
-        String tempSQL = "SELECT account_num FROM accounts WHERE ";
+
+        numResults = 0;
+        sql = "SELECT account_num FROM accounts WHERE ";
         Enumeration<Integer> eAccts = Collections.enumeration(accts);
         while(eAccts.hasMoreElements()) {
-            sql = tempSQL.concat(String.format("id=$s OR ", eAccts.nextElement()));
+            sql = sql.concat(String.format("id=%s ", eAccts.nextElement()));
+            if(eAccts.hasMoreElements()) sql = sql.concat("OR ");
+            else sql = sql.concat(";");
         } //*/
-        
-        //System.out.println(sql); //T/S
-        
+
+        try{
+            Statement stmt = conn.createStatement();
+            result = stmt.executeQuery(sql);
+            while (result.next()) {
+                numResults++;
+                acctNums.add(result.getString("account_num"));
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(WarningController.class.getName()).log(Level.SEVERE, null, e);
+            Main.showAlert(DialogTypes.DBERROR,null);
+        }
+
+
+        //* TROUBLESHOOTING
+        System.out.println(sql);
+        Enumeration<String> eAcctNums = Collections.enumeration(acctNums);
+        while(eAcctNums.hasMoreElements()) {
+            System.out.println(eAcctNums.nextElement());
+        } //*/
+
+
         shared.closeDB();
         return acctNums;
     }
