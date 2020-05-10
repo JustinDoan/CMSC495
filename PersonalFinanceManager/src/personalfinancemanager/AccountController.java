@@ -61,7 +61,8 @@ public class AccountController implements Initializable {
             balance = Double.parseDouble(balanceField.getText());
         }
         catch (NumberFormatException n) {
-            JOptionPane.showMessageDialog(null, "Balance must be a number");
+            Main.showAlert(DialogTypes.NAN, "Balance");
+            return;        
         }
         
         DAO.shared.insertAccount(accountNumber, routingNumber, balance);

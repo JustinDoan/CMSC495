@@ -52,9 +52,9 @@ public class Login2Controller implements Initializable {
                 username = unInput.trim();
                 password = pwInput.trim();
         
-                if (!username.matches("[\\w*\\s*[!@#$%^&\\*()]*]*")) Main.showAlert(DialogTypes.INVALIDCHARACTERS);
+                if (!username.matches("[\\w*\\s*[!@#$%^&\\*()]*]*")) Main.showAlert(DialogTypes.INVALIDCHARACTERS,null);
                 else DAO.shared.login(username,password);
-        } else Main.showAlert(DialogTypes.EMPTYFIELD);
+        } else Main.showAlert(DialogTypes.INVALIDFIELD,null);
     }
     
     @FXML

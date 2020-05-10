@@ -264,7 +264,7 @@ public class DAO {
                 numResults++;
                 if(numResults > 1) {
                     //should not happen since user_name is unique
-                    Main.showAlert(DialogTypes.DBERROR);
+                    Main.showAlert(DialogTypes.DBERROR,null);
                     result = null;
                     break;
                 }
@@ -280,16 +280,16 @@ public class DAO {
                 
                 sha_256hex = bytesToHex(hashbytes);
                 
-                if(sha_256hex.compareTo(password) == 0) Main.showAlert(DialogTypes.SUCCESS);
-                else Main.showAlert(DialogTypes.FAILURE);
+                if(sha_256hex.compareTo(password) == 0) Main.showAlert(DialogTypes.SUCCESS,null);
+                else Main.showAlert(DialogTypes.FAILURE,null);
             }
             
-            if(!pw.isEmpty() && numResults<1) Main.showAlert(DialogTypes.USERNAME);
+            if(!pw.isEmpty() && numResults<1) Main.showAlert(DialogTypes.USERNAME,null);
             //empty input is handled in the invoking function
             
         } catch (SQLException e) {  
             Logger.getLogger(WarningController.class.getName()).log(Level.SEVERE, null, e);
-            Main.showAlert(DialogTypes.DBERROR);
+            Main.showAlert(DialogTypes.DBERROR,null);
         }
         
         return currUser;

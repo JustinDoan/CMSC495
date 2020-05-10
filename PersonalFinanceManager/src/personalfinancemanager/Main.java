@@ -9,7 +9,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
@@ -42,15 +41,19 @@ public class Main extends Application {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }   
     }
-    public static void showAlert(DialogTypes type){
+    public static void showAlert(DialogTypes type, String invalidFieldName){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         ((Stage) alert.getDialogPane().getScene().getWindow()).setAlwaysOnTop(true);
         alert.setHeaderText(null);
 
         switch(type){
-            case EMPTYFIELD:
-                alert.setTitle("Empty Login Fields");
-                alert.setContentText("Please enter user name and password.");
+            case INVALIDFIELD:
+                alert.setTitle("Invalid Field");
+                alert.setContentText("Please ensure all fields have valid entries before continuing.");
+                break;
+            case NAN:
+                alert.setTitle("Not a Number");
+                alert.setContentText(invalidFieldName + " must be a number.");
                 break;
             case USERNAME:
                 alert.setTitle("Empty Username Field");
@@ -79,10 +82,12 @@ public class Main extends Application {
 }
 //("The only acceptable characters are letters, numbers and symbols.")("Please enter user name and password.");
 enum DialogTypes{
-        EMPTYFIELD,
+        INVALIDFIELD,
+        NAN,
         USERNAME,
         INVALIDCHARACTERS,
         SUCCESS,
         FAILURE,
-        DBERROR
+        DBERROR,
+        
     };
