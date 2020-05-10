@@ -28,7 +28,6 @@ import javafx.stage.Stage;
 
 public class DAO {
     static DAO shared = new DAO();
-
     Connection conn = null;
 
     public void connect() {
@@ -119,13 +118,13 @@ public class DAO {
     }
      
     public void closeDB() {
-        try {  
-            if (conn != null) {  
-                conn.close();  
+        try {
+            if (conn != null) {
+                conn.close();
             }  
         } catch (SQLException ex) {  
             System.out.println(ex.getMessage());  
-        }  
+        }
     }
     
     public void insertAccount(long account_num, long routing_num, double balance) {  
@@ -247,6 +246,8 @@ public class DAO {
         ResultSet result;
         String sha_256hex = "";
         
+        shared.connect();
+        
         final MessageDigest digest;
         try {
             digest = MessageDigest.getInstance("SHA-256");
@@ -292,6 +293,7 @@ public class DAO {
             Main.showAlert(DialogTypes.DBERROR,null);
         }
         
+        shared.closeDB();
         return currUser;
     }
     
