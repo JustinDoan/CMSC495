@@ -16,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -42,7 +43,7 @@ public class MainMenuController implements Initializable, AccountCreator, Accoun
        Account b = new Account(141, 12123, 10);
        currentUser.addAccount(b);
        
-       authenticate();
+       //authenticate();
     }
 
     @FXML
@@ -59,6 +60,7 @@ public class MainMenuController implements Initializable, AccountCreator, Accoun
             loginStage.setAlwaysOnTop(true);
             loginStage.setResizable(false);
             //TODO hide this menu during login
+            
             loginController.enclosingStage = loginStage;
             loginStage.show();
         } catch (IOException ex) {

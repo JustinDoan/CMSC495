@@ -76,7 +76,7 @@ public class DAO {
         
         tables[3] = "CREATE TABLE IF NOT EXISTS users (\n"
                 + " id INTEGER PRIMARY KEY AUTOINCREMENT, \n"
-                + " last_update DATETIME NOT NULL, \n"
+                + " last_update TEXT NOT NULL, \n"
                 + " user_name TEXT NOT NULL UNIQUE, \n"
                 + " password TEXT NOT NULL, \n"
                 + " email_address TEXT, \n"
@@ -143,14 +143,23 @@ public class DAO {
         }  
     }
     
-    public void insertUser(Date last_update, String user_name, String password) {  
+    public void insertUser(String last_update, String user_name, String password) {  
         String sql = "INSERT INTO users(last_update, user_name, password) VALUES(?,?,?)";  
-   
+        final MessageDigest digest;
+        try {
+            digest = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException nsa) {
+        	// handle failure
+            return;
+        }
+        String saltedPW = password.concat(last_update.toString());
+        byte[] hashbytes = digest.digest(saltedPW.getBytes(StandardCharsets.UTF_8));
+        String sha_256hex = bytesToHex(hashbytes);  
         try{   
             PreparedStatement pstmt = conn.prepareStatement(sql);  
-            pstmt.setDate(1, last_update);
+            pstmt.setString(1, last_update);
             pstmt.setString(2, user_name);
-            pstmt.setString(3, password);
+            pstmt.setString(3, sha_256hex);
             pstmt.executeUpdate();  
         } catch (SQLException e) {  
             System.out.println(e.getMessage());  

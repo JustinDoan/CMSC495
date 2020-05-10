@@ -5,16 +5,24 @@
  */
 package personalfinancemanager;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import javafx.scene.control.PasswordField;
 import javafx.stage.Stage;
 import javafx.application.Platform;
 import javafx.application.Application;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 
 /**
@@ -52,14 +60,47 @@ public class Login2Controller implements Initializable {
                 username = unInput.trim();
                 password = pwInput.trim();
         
-                if (!username.matches("[\\w*\\s*[!@#$%^&\\*()]*]*")) Main.showAlert(DialogTypes.INVALIDCHARACTERS,null);
-                else DAO.shared.login(username,password);
+                if (!username.matches("[\\w*\\s*[!@#$%^&\\*()]*]*")) {
+                	Main.showAlert(DialogTypes.INVALIDCHARACTERS,null);
+                } else {
+                	// Set session
+                	DAO.shared.login(username,password);
+                	try {
+        	            FXMLLoader loader = new FXMLLoader(getClass().getResource("MainMenu.fxml"));
+        	            Scene scene = new Scene(loader.load(), 480, 320);
+        	            Stage mainMenuStage = new Stage();
+        	            mainMenuStage.setTitle("Personal Finance Manager");
+        	            mainMenuStage.setScene(scene);
+        	            mainMenuStage.show();
+        	            // After we successfully show the mainMenu stage after good login, hide current one
+        	            final Node source = (Node) event.getSource();
+        	            final Stage loginStage = (Stage) source.getScene().getWindow();
+        	            loginStage.close();
+        	        } catch (IOException ex) {
+        	            Logger.getLogger(MainMenuController.class.getName()).log(Level.SEVERE, null, ex);
+        	        }
+                }
         } else Main.showAlert(DialogTypes.INVALIDFIELD,null);
     }
     
     @FXML
     private void createUser(ActionEvent event) {
-    }    
+    	        try {
+    	            FXMLLoader loader = new FXMLLoader(getClass().getResource("CreateUser.fxml"));
+    	            Scene scene = new Scene(loader.load(), 720, 320);
+    	            CreateUser createUserController = loader.getController();
+    	            Stage createUserStage = new Stage();
+    	            createUserStage.setTitle("Create New User");
+    	            createUserStage.setScene(scene);
+    	            createUserStage.setAlwaysOnTop(true);
+    	            createUserController.enclosingStage = createUserStage;
+
+    	            createUserStage.show();
+    	        } catch (IOException ex) {
+    	            Logger.getLogger(MainMenuController.class.getName()).log(Level.SEVERE, null, ex);
+    	        }
+    	        
+    	    }
     
     @FXML
     private void exit(ActionEvent event) {
@@ -70,14 +111,5 @@ public class Login2Controller implements Initializable {
     
     
 }
-    
-    
-
-    /* 
-    public void hideMenu(Stage ps) {
-        this.parentStage = ps;
-        this.enclosingStage.initModality(Modality.WINDOW_MODAL);
-        this.enclosingStage.initOwner(ps);
-    } //*/
     
 

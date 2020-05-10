@@ -11,6 +11,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 /**
  *
@@ -22,7 +23,7 @@ public class Main extends Application {
     
     public static void main(String[] args) {
         DAO.shared.connect();
-        DAO.shared.closeDB();
+        //DAO.shared.closeDB();
         Application.launch(Main.class, (java.lang.String[])null);
         
     }
@@ -30,13 +31,13 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("MainMenu.fxml"));
-            Scene scene = new Scene(loader.load(), 480, 320);
-            
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Login2.fxml"));
+            Scene scene = new Scene(loader.load());
             primaryStage.setTitle("Personal Finance Manager");
             primaryStage.setScene(scene);
+            primaryStage.setTitle("Login");
+            primaryStage.setResizable(false);
             primaryStage.show();
-            
         } catch (IOException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }   
