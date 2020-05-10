@@ -27,7 +27,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class DAO {
-    
+    static DAO shared = new DAO();
+
     Connection conn = null;
 
     public void connect() {
@@ -263,7 +264,7 @@ public class DAO {
                 numResults++;
                 if(numResults > 1) {
                     //should not happen since user_name is unique
-                    this.warnDialog("Error","There is a problem with the database. Please contact your administrator.");
+                    Main.showAlert(DialogTypes.DBERROR);
                     result = null;
                     break;
                 }
@@ -279,16 +280,16 @@ public class DAO {
                 
                 sha_256hex = bytesToHex(hashbytes);
                 
-                if(sha_256hex.compareTo(password) == 0) this.warnDialog("Authentication successful.");
-                else this.warnDialog("Authentication failed.");
+                if(sha_256hex.compareTo(password) == 0) Main.showAlert(DialogTypes.SUCCESS);
+                else Main.showAlert(DialogTypes.FAILURE);
             }
             
-            if(!pw.isEmpty() && numResults<1) this.warnDialog("Please provide a valid user name.");
+            if(!pw.isEmpty() && numResults<1) Main.showAlert(DialogTypes.USERNAME);
             //empty input is handled in the invoking function
             
         } catch (SQLException e) {  
             Logger.getLogger(WarningController.class.getName()).log(Level.SEVERE, null, e);
-            this.warnDialog("Error","There was a problem communicating with the database. Please contact your administrator.");
+            Main.showAlert(DialogTypes.DBERROR);
         }
         
         return currUser;

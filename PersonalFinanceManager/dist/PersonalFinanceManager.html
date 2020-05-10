@@ -4,7 +4,7 @@
     function launchApplication(jnlpfile) {
         dtjava.launch(            {
                 url : 'PersonalFinanceManager.jnlp',
-                jnlp_content : 'PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjxqbmxwIHNwZWM9IjEuMCIgeG1sbnM6amZ4PSJodHRwOi8vamF2YWZ4LmNvbSIgaHJlZj0iUGVyc29uYWxGaW5hbmNlTWFuYWdlci5qbmxwIj4NCiAgPGluZm9ybWF0aW9uPg0KICAgIDx0aXRsZT5QZXJzb25hbEZpbmFuY2VNYW5hZ2VyPC90aXRsZT4NCiAgICA8dmVuZG9yPm1hcmN1c21haWJhY2g8L3ZlbmRvcj4NCiAgICA8ZGVzY3JpcHRpb24+bnVsbDwvZGVzY3JpcHRpb24+DQogICAgPG9mZmxpbmUtYWxsb3dlZC8+DQogIDwvaW5mb3JtYXRpb24+DQogIDxyZXNvdXJjZXM+DQogICAgPGoyc2UgdmVyc2lvbj0iMS42KyIgaHJlZj0iaHR0cDovL2phdmEuc3VuLmNvbS9wcm9kdWN0cy9hdXRvZGwvajJzZSIvPg0KICAgIDxqYXIgaHJlZj0iUGVyc29uYWxGaW5hbmNlTWFuYWdlci5qYXIiIHNpemU9IjI3OTI3IiBkb3dubG9hZD0iZWFnZXIiIC8+DQogICAgPGphciBocmVmPSJsaWJcc3FsaXRlLWpkYmMtMy4zMC4xLmphciIgc2l6ZT0iNjA5Njg2MSIgZG93bmxvYWQ9ImVhZ2VyIiAvPg0KICA8L3Jlc291cmNlcz4NCiAgPGpmeDpqYXZhZngtZGVzYyAgd2lkdGg9IjgwMCIgaGVpZ2h0PSI2MDAiIG1haW4tY2xhc3M9InBlcnNvbmFsZmluYW5jZW1hbmFnZXIuTWFpbiIgIG5hbWU9IlBlcnNvbmFsRmluYW5jZU1hbmFnZXIiIC8+DQogIDx1cGRhdGUgY2hlY2s9ImFsd2F5cyIvPg0KPC9qbmxwPg0K'
+                jnlp_content : 'PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPGpubHAgc3BlYz0iMS4wIiB4bWxuczpqZng9Imh0dHA6Ly9qYXZhZnguY29tIiBocmVmPSJQZXJzb25hbEZpbmFuY2VNYW5hZ2VyLmpubHAiPgogIDxpbmZvcm1hdGlvbj4KICAgIDx0aXRsZT5QZXJzb25hbEZpbmFuY2VNYW5hZ2VyPC90aXRsZT4KICAgIDx2ZW5kb3I+bWFyY3VzbWFpYmFjaDwvdmVuZG9yPgogICAgPGRlc2NyaXB0aW9uPm51bGw8L2Rlc2NyaXB0aW9uPgogICAgPG9mZmxpbmUtYWxsb3dlZC8+CiAgPC9pbmZvcm1hdGlvbj4KICA8cmVzb3VyY2VzPgogICAgPGoyc2UgdmVyc2lvbj0iMS42KyIgaHJlZj0iaHR0cDovL2phdmEuc3VuLmNvbS9wcm9kdWN0cy9hdXRvZGwvajJzZSIvPgogICAgPGphciBocmVmPSJQZXJzb25hbEZpbmFuY2VNYW5hZ2VyLmphciIgc2l6ZT0iMzQzNzkiIGRvd25sb2FkPSJlYWdlciIgLz4KICAgIDxqYXIgaHJlZj0ibGliL3NxbGl0ZS1qZGJjLTMuMzAuMS5qYXIiIHNpemU9IjYwOTY4NjEiIGRvd25sb2FkPSJlYWdlciIgLz4KICA8L3Jlc291cmNlcz4KICA8amZ4OmphdmFmeC1kZXNjICB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgbWFpbi1jbGFzcz0icGVyc29uYWxmaW5hbmNlbWFuYWdlci5NYWluIiAgbmFtZT0iUGVyc29uYWxGaW5hbmNlTWFuYWdlciIgLz4KICA8dXBkYXRlIGNoZWNrPSJhbHdheXMiLz4KPC9qbmxwPgo='
             },
             {
                 javafx : '8.0+'
@@ -16,15 +16,14 @@
 </script>
 
 <script>
-    function javafxEmbedpersonalfinancemanager() {
+    function javafxEmbed() {
         dtjava.embed(
             {
-                id : 'personalfinancemanager',
                 url : 'PersonalFinanceManager.jnlp',
                 placeholder : 'javafx-app-placeholder',
-                width : '800',
-                height : '600',
-                jnlp_content : 'PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjxqbmxwIHNwZWM9IjEuMCIgeG1sbnM6amZ4PSJodHRwOi8vamF2YWZ4LmNvbSIgaHJlZj0iUGVyc29uYWxGaW5hbmNlTWFuYWdlci5qbmxwIj4NCiAgPGluZm9ybWF0aW9uPg0KICAgIDx0aXRsZT5QZXJzb25hbEZpbmFuY2VNYW5hZ2VyPC90aXRsZT4NCiAgICA8dmVuZG9yPm1hcmN1c21haWJhY2g8L3ZlbmRvcj4NCiAgICA8ZGVzY3JpcHRpb24+bnVsbDwvZGVzY3JpcHRpb24+DQogICAgPG9mZmxpbmUtYWxsb3dlZC8+DQogIDwvaW5mb3JtYXRpb24+DQogIDxyZXNvdXJjZXM+DQogICAgPGoyc2UgdmVyc2lvbj0iMS42KyIgaHJlZj0iaHR0cDovL2phdmEuc3VuLmNvbS9wcm9kdWN0cy9hdXRvZGwvajJzZSIvPg0KICAgIDxqYXIgaHJlZj0iUGVyc29uYWxGaW5hbmNlTWFuYWdlci5qYXIiIHNpemU9IjI3OTI3IiBkb3dubG9hZD0iZWFnZXIiIC8+DQogICAgPGphciBocmVmPSJsaWJcc3FsaXRlLWpkYmMtMy4zMC4xLmphciIgc2l6ZT0iNjA5Njg2MSIgZG93bmxvYWQ9ImVhZ2VyIiAvPg0KICA8L3Jlc291cmNlcz4NCiAgPGpmeDpqYXZhZngtZGVzYyAgd2lkdGg9IjgwMCIgaGVpZ2h0PSI2MDAiIG1haW4tY2xhc3M9InBlcnNvbmFsZmluYW5jZW1hbmFnZXIuTWFpbiIgIG5hbWU9IlBlcnNvbmFsRmluYW5jZU1hbmFnZXIiIC8+DQogIDx1cGRhdGUgY2hlY2s9ImFsd2F5cyIvPg0KPC9qbmxwPg0K'
+                width : 800,
+                height : 600,
+                jnlp_content : 'PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPGpubHAgc3BlYz0iMS4wIiB4bWxuczpqZng9Imh0dHA6Ly9qYXZhZnguY29tIiBocmVmPSJQZXJzb25hbEZpbmFuY2VNYW5hZ2VyLmpubHAiPgogIDxpbmZvcm1hdGlvbj4KICAgIDx0aXRsZT5QZXJzb25hbEZpbmFuY2VNYW5hZ2VyPC90aXRsZT4KICAgIDx2ZW5kb3I+bWFyY3VzbWFpYmFjaDwvdmVuZG9yPgogICAgPGRlc2NyaXB0aW9uPm51bGw8L2Rlc2NyaXB0aW9uPgogICAgPG9mZmxpbmUtYWxsb3dlZC8+CiAgPC9pbmZvcm1hdGlvbj4KICA8cmVzb3VyY2VzPgogICAgPGoyc2UgdmVyc2lvbj0iMS42KyIgaHJlZj0iaHR0cDovL2phdmEuc3VuLmNvbS9wcm9kdWN0cy9hdXRvZGwvajJzZSIvPgogICAgPGphciBocmVmPSJQZXJzb25hbEZpbmFuY2VNYW5hZ2VyLmphciIgc2l6ZT0iMzQzNzkiIGRvd25sb2FkPSJlYWdlciIgLz4KICAgIDxqYXIgaHJlZj0ibGliL3NxbGl0ZS1qZGJjLTMuMzAuMS5qYXIiIHNpemU9IjYwOTY4NjEiIGRvd25sb2FkPSJlYWdlciIgLz4KICA8L3Jlc291cmNlcz4KICA8amZ4OmphdmFmeC1kZXNjICB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgbWFpbi1jbGFzcz0icGVyc29uYWxmaW5hbmNlbWFuYWdlci5NYWluIiAgbmFtZT0iUGVyc29uYWxGaW5hbmNlTWFuYWdlciIgLz4KICA8dXBkYXRlIGNoZWNrPSJhbHdheXMiLz4KPC9qbmxwPgo='
             },
             {
                 javafx : '8.0+'
@@ -33,7 +32,7 @@
         );
     }
     <!-- Embed FX application into web page once page is loaded -->
-    dtjava.addOnloadCallback(javafxEmbedpersonalfinancemanager);
+    dtjava.addOnloadCallback(javafxEmbed);
 </script>
 
 </head><body>

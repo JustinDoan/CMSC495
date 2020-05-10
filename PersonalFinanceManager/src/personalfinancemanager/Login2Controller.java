@@ -15,6 +15,7 @@ import javafx.scene.control.PasswordField;
 import javafx.stage.Stage;
 import javafx.application.Platform;
 import javafx.application.Application;
+import javafx.scene.control.Alert;
 
 /**
  * FXML Controller class
@@ -27,7 +28,6 @@ public class Login2Controller implements Initializable {
     private TextField userNameField;
     @FXML
     private PasswordField passwordField;
-    private DAO dao;
     
     Stage enclosingStage;
     Stage parentStage;
@@ -38,8 +38,7 @@ public class Login2Controller implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        dao = new DAO();
-        dao.connect();
+        
     }    
 
     @FXML
@@ -53,25 +52,27 @@ public class Login2Controller implements Initializable {
                 username = unInput.trim();
                 password = pwInput.trim();
         
-                if (!username.matches("[\\w*\\s*[!@#$%^&\\*()]*]*")) dao.warnDialog("The only acceptable characters are letters, numbers and symbols.");
-                else dao.login(username,password);
-        } else dao.warnDialog("Please enter user name and password.");
+                if (!username.matches("[\\w*\\s*[!@#$%^&\\*()]*]*")) Main.showAlert(DialogTypes.INVALIDCHARACTERS);
+                else DAO.shared.login(username,password);
+        } else Main.showAlert(DialogTypes.EMPTYFIELD);
     }
-
+    
     @FXML
     private void createUser(ActionEvent event) {
     }    
     
     @FXML
     private void exit(ActionEvent event) {
-        dao.closeDB();
         enclosingStage.close();
         System.out.println("Login exit");
         Platform.exit();
     }
     
+    
 }
     
+    
+
     /* 
     public void hideMenu(Stage ps) {
         this.parentStage = ps;

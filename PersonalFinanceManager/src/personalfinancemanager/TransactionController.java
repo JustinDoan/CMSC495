@@ -39,7 +39,6 @@ public class TransactionController implements Initializable {
     private ComboBox<String> recipientBox;
     @FXML
     private ComboBox<String> sourceBox;
-    private DAO dao;
     
     Stage enclosingStage;
     //AccountManager manager;
@@ -51,11 +50,22 @@ public class TransactionController implements Initializable {
         ObservableList<String> accountList = FXCollections.observableArrayList("1", "2", "3");
         recipientBox.setItems(accountList);
         sourceBox.setItems(accountList);
-        dao = new DAO();
-        dao.connect();
+        sourceBox.setDisable(true);
+        recipientBox.setDisable(true); 
 
     }    
 
+    @FXML
+    private void transactionDidChange(ActionEvent event){
+        if(transactionBox.getValue().equals("Transfer")){
+            sourceBox.setDisable(false);
+            recipientBox.setDisable(false);
+        }
+        else{
+           sourceBox.setDisable(true);
+           recipientBox.setDisable(true); 
+        }
+    }
     @FXML
     private void submit(ActionEvent event) {
         double amount = 0;
@@ -80,7 +90,7 @@ public class TransactionController implements Initializable {
                 JOptionPane.showMessageDialog(null, "Must choose an account");
                 return;
             }
-            dao.insertDeposits(accountTo, amount);
+            DAO.shared.insertDeposits(accountTo, amount);
         }
         else if(transactionType.equals("Withdrawal")){
             try{
@@ -90,7 +100,7 @@ public class TransactionController implements Initializable {
                 JOptionPane.showMessageDialog(null, "Must choose an account");
                 return;
             }
-            dao.insertWithdrawals(accountFrom, amount);
+            DAO.shared.insertWithdrawals(accountFrom, amount);
         }
         else {
             try{
@@ -107,7 +117,7 @@ public class TransactionController implements Initializable {
                 JOptionPane.showMessageDialog(null, "Must choose an account");
                 return;
             }
-            dao.insertTransfers(accountTo, accountFrom, amount);
+            DAO.shared.insertTransfers(accountTo, accountFrom, amount);
         }
         
         //manager.transaction(transactionType, Long.parseLong(sourceBox.getValue()), Long.parseLong(recipientBox.getValue()), amount);
@@ -118,7 +128,6 @@ public class TransactionController implements Initializable {
     @FXML
     private void exit(ActionEvent event) {
         enclosingStage.close();
-        dao.closeDB();
     }
     
 }

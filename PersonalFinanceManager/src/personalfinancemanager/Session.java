@@ -13,6 +13,7 @@ public class Session {
     private long uid;
     private boolean isAuthd;
     private User currentUser;
+    static Session sharedSession = new Session();
     
     public Session () {
         this.uid = 0;

@@ -27,7 +27,6 @@ public class AccountController implements Initializable {
     private TextField accountNumberField;
     @FXML
     private TextField balanceField;
-    private DAO dao;
     
     Stage enclosingStage;
 
@@ -36,8 +35,7 @@ public class AccountController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        dao = new DAO();
-        dao.connect();
+        
     }
 
     @FXML
@@ -66,12 +64,11 @@ public class AccountController implements Initializable {
             JOptionPane.showMessageDialog(null, "Balance must be a number");
         }
         
-        dao.insertAccount(accountNumber, routingNumber, balance);
+        DAO.shared.insertAccount(accountNumber, routingNumber, balance);
     }
 
     @FXML
     private void exit(ActionEvent event) {
-        dao.closeDB();
         enclosingStage.close();
     }
     

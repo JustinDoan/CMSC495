@@ -44,7 +44,6 @@ public class ReceiptController implements Initializable {
     private TextField cashField;
     @FXML
     private DatePicker dateField;
-    private DAO dao;
 
     Stage enclosingStage;
     
@@ -55,9 +54,7 @@ public class ReceiptController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        dao = new DAO();
-        dao.connect();
-        
+      
         ObservableList<Integer> list = FXCollections.observableArrayList(1, 2, 3);
         accountBox.setItems(list);
         cardBox.setItems(list);
@@ -118,12 +115,11 @@ public class ReceiptController implements Initializable {
             JOptionPane.showMessageDialog(null, "Date must be a date");
         }
         
-        dao.insertReceipts(card_num, sub_total, total, sales_tax, discount, cash_paid, date);
+        DAO.shared.insertReceipts(card_num, sub_total, total, sales_tax, discount, cash_paid, date);
     }
 
     @FXML
     private void exit(ActionEvent event) {
-        dao.closeDB();
         enclosingStage.close();
     }
     

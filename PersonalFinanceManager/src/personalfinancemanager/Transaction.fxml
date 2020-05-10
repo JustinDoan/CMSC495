@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="241.0" prefWidth="511.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="personalfinancemanager.TransactionController">
+<AnchorPane prefHeight="241.0" prefWidth="511.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="personalfinancemanager.TransactionController">
    <children>
       <VBox alignment="TOP_CENTER" layoutX="13.0" layoutY="8.0" prefHeight="247.0" prefWidth="485.0">
          <children>
@@ -57,7 +57,7 @@
                   </Text>
                   <ComboBox fx:id="recipientBox" prefWidth="150.0" promptText="Recipient" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                   <ComboBox fx:id="sourceBox" prefWidth="150.0" promptText="Source" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                  <ComboBox fx:id="transactionBox" prefHeight="27.0" prefWidth="163.0" promptText="Transaction Type" visibleRowCount="3" GridPane.columnIndex="1" />
+                  <ComboBox fx:id="transactionBox" onAction="#transactionDidChange" prefHeight="27.0" prefWidth="163.0" promptText="Transaction Type" visibleRowCount="3" GridPane.columnIndex="1" />
                   <Label text="Account From" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Label text="Account To" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                </children>
