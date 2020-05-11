@@ -38,14 +38,14 @@
                   </Text>
                   <TextField fx:id="taxField" alignment="CENTER" prefHeight="27.0" prefWidth="137.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                   <TextField fx:id="discountField" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Account">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Account" visible="false">
                      <GridPane.margin>
                         <Insets right="20.0" />
                      </GridPane.margin>
                   </Text>
-                  <ComboBox fx:id="accountBox" prefWidth="150.0" promptText="Account" GridPane.columnIndex="1" />
-                  <ComboBox fx:id="cardBox" prefWidth="150.0" promptText="Card" GridPane.columnIndex="3" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Card" GridPane.columnIndex="2">
+                  <ComboBox fx:id="accountBox" disable="true" prefWidth="150.0" promptText="Account" visible="false" GridPane.columnIndex="1" />
+                  <ComboBox fx:id="cardBox" disable="true" prefWidth="150.0" promptText="Card" visible="false" GridPane.columnIndex="3" />
+                  <Text disable="true" strokeType="OUTSIDE" strokeWidth="0.0" text="Card" visible="false" GridPane.columnIndex="2">
                      <GridPane.margin>
                         <Insets right="20.0" />
                      </GridPane.margin>
