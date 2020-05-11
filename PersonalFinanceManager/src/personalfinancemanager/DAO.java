@@ -319,9 +319,7 @@ public class DAO {
         try (
              PreparedStatement pstmt  = conn.prepareStatement(sql)){
             
-            // set the value
             pstmt.setString(1,account_num);
-            //
             ResultSet rs  = pstmt.executeQuery();
             result = rs.getDouble("balance");
             
