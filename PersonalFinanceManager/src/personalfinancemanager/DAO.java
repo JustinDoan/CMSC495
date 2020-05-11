@@ -139,7 +139,7 @@ public class DAO {
             pstmt.setDouble(3, balance);
             pstmt.executeUpdate();  
         } catch (SQLException e) {  
-            System.out.println(e.getMessage());  
+            System.out.println("Poo");  
         }  
     }
     
@@ -167,7 +167,7 @@ public class DAO {
     }
     
     public void insertCards( String account_num, String card_num, double balance) {
-        String sql = "INSERT INTO cards(account_num, card_num, balance) VALUES(?,?,?)";
+        String sql = "INSERT INTO cards(account_id, card_num, balance) VALUES(?,?,?)";
         
         try{   
             PreparedStatement pstmt = conn.prepareStatement(sql);    
@@ -190,7 +190,21 @@ public class DAO {
             pstmt.executeUpdate();  
         } catch (SQLException e) {  
             System.out.println(e.getMessage());  
-        }  
+        }
+        double current_balance = DAO.shared.getBalance(destination_account);
+        double new_balance = current_balance + amount;
+        
+        String sql2 = "UPDATE accounts SET balance = ? , WHERE account_num = ?";
+        
+        try{
+            PreparedStatement pstmt = conn.prepareStatement(sql2); 
+            pstmt.setDouble(1, new_balance);
+            pstmt.setString(2, destination_account);
+            pstmt.executeUpdate();
+        }
+         catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
     
     public void insertWithdrawals(String source_account, double amount) {
@@ -203,7 +217,22 @@ public class DAO {
             pstmt.executeUpdate();
         } catch (SQLException e) {  
             System.out.println(e.getMessage());  
-        }  
+        }
+        
+        double current_balance = DAO.shared.getBalance(source_account);
+        double new_balance = current_balance - amount;
+        
+        String sql2 = "UPDATE accounts SET balance = ? , WHERE account_num = ?";
+        
+        try{
+            PreparedStatement pstmt = conn.prepareStatement(sql2); 
+            pstmt.setDouble(1, new_balance);
+            pstmt.setString(2, source_account);
+            pstmt.executeUpdate();
+        }
+         catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
     
     //*
@@ -228,7 +257,39 @@ public class DAO {
             pstmt.executeUpdate();  
         } catch (SQLException e) {  
             System.out.println(e.getMessage());  
-        }  
+        }
+        
+        double current_balance1 = DAO.shared.getBalance(source_account);
+        double new_balance1 = current_balance1 - amount;
+        
+        String sql3 = "UPDATE accounts SET balance = ? , WHERE account_num = ?";
+        
+        try{
+            PreparedStatement pstmt = conn.prepareStatement(sql3); 
+            pstmt.setDouble(1, new_balance1);
+            pstmt.setString(2, source_account);
+            pstmt.executeUpdate();
+        }
+         catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        
+        double current_balance2 = DAO.shared.getBalance(destination_account);
+        double new_balance2 = current_balance2 + amount;
+        
+        String sql4 = "UPDATE accounts SET balance = ? , WHERE account_num = ?";
+        
+        try{
+            PreparedStatement pstmt = conn.prepareStatement(sql4); 
+            pstmt.setDouble(1, new_balance2);
+            pstmt.setString(2, destination_account);
+            pstmt.executeUpdate();
+        }
+         catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        
+        
     } //*/
     
     public void insertReceipts( String card_num, double subTotal, double total, double tax,
@@ -249,6 +310,26 @@ public class DAO {
         } catch (SQLException e) {  
             System.out.println(e.getMessage());  
         }  
+    }
+    
+    public double getBalance(String account_num){
+        String sql = "SELECT balance FROM accounts WHERE account_num = ?;";
+        double result = 0;
+        
+        try (
+             PreparedStatement pstmt  = conn.prepareStatement(sql)){
+            
+            // set the value
+            pstmt.setString(1,account_num);
+            //
+            ResultSet rs  = pstmt.executeQuery();
+            result = rs.getDouble("balance");
+            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        
+        return result;
     }
     
     public User login (String un, String pw) {
@@ -311,7 +392,7 @@ public class DAO {
             Main.showAlert(DialogTypes.DBERROR,null);
         }
         
-        shared.closeDB();
+        //shared.closeDB();
         return currUser;
     }
     
