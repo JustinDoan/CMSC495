@@ -297,6 +297,7 @@ public class DAO {
                     Main.showAlert(DialogTypes.SUCCESS,null);
                     currUser = new User();
                     currUser.setName(userName);
+                    currUser.setID(userID);
                     //shared.getAccounts(userID); //T/S
                 }
                 else Main.showAlert(DialogTypes.FAILURE,null);
