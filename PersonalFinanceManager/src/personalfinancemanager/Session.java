@@ -13,7 +13,7 @@ public class Session {
     private long uid;
     private boolean isAuthd;
     private User currentUser;
-    static Session sharedSession = new Session();
+    static Session shared = new Session();
     
     public Session () {
         this.uid = 0;
@@ -21,10 +21,15 @@ public class Session {
         this.currentUser = new User();
     }
     
+    public User getCurrentUser(){
+        return this.currentUser;
+    }
     public void setUID(long uid) {
         this.uid = uid;
     }
-    
+    public long getUID() {
+        return this.uid;
+    }
     public void setUser(User u) {
         this.currentUser = u;
     }
