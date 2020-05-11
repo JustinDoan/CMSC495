@@ -194,7 +194,7 @@ public class DAO {
         double current_balance = DAO.shared.getBalance(destination_account);
         double new_balance = current_balance + amount;
         
-        String sql2 = "UPDATE accounts SET balance = ? , WHERE account_num = ?";
+        String sql2 = "UPDATE accounts SET balance = ? WHERE account_num = ?";
         
         try{
             PreparedStatement pstmt = conn.prepareStatement(sql2); 
@@ -222,7 +222,7 @@ public class DAO {
         double current_balance = DAO.shared.getBalance(source_account);
         double new_balance = current_balance - amount;
         
-        String sql2 = "UPDATE accounts SET balance = ? , WHERE account_num = ?";
+        String sql2 = "UPDATE accounts SET balance = ? WHERE account_num = ?";
         
         try{
             PreparedStatement pstmt = conn.prepareStatement(sql2); 
@@ -262,7 +262,7 @@ public class DAO {
         double current_balance1 = DAO.shared.getBalance(source_account);
         double new_balance1 = current_balance1 - amount;
         
-        String sql3 = "UPDATE accounts SET balance = ? , WHERE account_num = ?";
+        String sql3 = "UPDATE accounts SET balance = ? WHERE account_num = ?";
         
         try{
             PreparedStatement pstmt = conn.prepareStatement(sql3); 
@@ -277,7 +277,7 @@ public class DAO {
         double current_balance2 = DAO.shared.getBalance(destination_account);
         double new_balance2 = current_balance2 + amount;
         
-        String sql4 = "UPDATE accounts SET balance = ? , WHERE account_num = ?";
+        String sql4 = "UPDATE accounts SET balance = ? WHERE account_num = ?";
         
         try{
             PreparedStatement pstmt = conn.prepareStatement(sql4); 
@@ -379,6 +379,7 @@ public class DAO {
                     currUser = new User();
                     currUser.setName(userName);
                     currUser.setID(userID);
+                    Session.shared.setUID(userID);
                     //shared.getAccounts(userID); //T/S
                 }
                 else Main.showAlert(DialogTypes.FAILURE,null);
@@ -396,14 +397,14 @@ public class DAO {
         return currUser;
     }
     
-        public ArrayList<String> getAccounts (int uid) {
+    public ArrayList<String> getAccounts (int uid) {
         int numResults = 0;
         String sql = "SELECT account_id FROM users_to_accounts WHERE user_id = ?;";
         ResultSet result;
         ArrayList<Integer> accts = new ArrayList<Integer>();
         ArrayList<String> acctNums = new ArrayList<String>();
 
-        shared.connect();
+        //shared.connect();
 
         try{
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -428,8 +429,8 @@ public class DAO {
         } //*/
 
         try{
-            Statement stmt = conn.createStatement();
-            result = stmt.executeQuery(sql);
+            PreparedStatement pstmt  = conn.prepareStatement(sql);
+            result = pstmt.executeQuery();
             while (result.next()) {
                 numResults++;
                 acctNums.add(result.getString("account_num"));
@@ -448,7 +449,7 @@ public class DAO {
         } //*/
 
 
-        shared.closeDB();
+        //shared.closeDB();
         return acctNums;
     }
     
