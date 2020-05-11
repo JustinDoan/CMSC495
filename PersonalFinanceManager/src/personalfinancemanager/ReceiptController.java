@@ -33,9 +33,9 @@ public class ReceiptController implements Initializable {
     @FXML
     private TextField discountField;
     @FXML
-    private ComboBox<Integer> accountBox;
+    private ComboBox<String> accountBox;
     @FXML
-    private ComboBox<Integer> cardBox;
+    private ComboBox<String> cardBox;
     @FXML
     private TextField subtotalField;
     @FXML
@@ -54,10 +54,11 @@ public class ReceiptController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-      
-        ObservableList<Integer> list = FXCollections.observableArrayList(1, 2, 3);
-        accountBox.setItems(list);
-        cardBox.setItems(list);
+        //Disabled for now.
+//        ObservableList<String> accountList = FXCollections.observableArrayList(DAO.shared.getAccounts(Session.shared.getUID()));
+//        ObservableList<String> cardList = FXCollections.observableArrayList(DAO.shared.getCards(Session.shared.getUID()));
+//        accountBox.setItems(accountList);
+//        cardBox.setItems(cardList);
     }    
 
     @FXML
@@ -83,7 +84,7 @@ public class ReceiptController implements Initializable {
            return;
         }
         
-        String card_num = cardBox.getValue().toString();
+        String card_num = ""; //Disabled for now. cardBox.getValue().toString();
         
         String card_id = null;
         double sub_total = 0;

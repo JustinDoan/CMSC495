@@ -72,6 +72,7 @@ public class AccountController implements Initializable {
         }
         
         DAO.shared.insertAccount(accountNumber, routingNumber, balance);
+        enclosingStage.close();
     }
 
     @FXML
