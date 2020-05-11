@@ -137,9 +137,22 @@ public class DAO {
             pstmt.setString(1, account_num);  
             pstmt.setString(2, routing_num);
             pstmt.setDouble(3, balance);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {  
+            System.out.println(e.getMessage());  
+        }  
+        
+        sql = "INSERT INTO users_to_accounts(user_id, account_id) VALUES(?,?);";
+        int uid = Session.shared.getUID();
+        int aid = shared.getAccountID(account_num);
+        
+        try{   
+            PreparedStatement pstmt = conn.prepareStatement(sql);  
+            pstmt.setInt(1, uid);  
+            pstmt.setInt(2, aid);
             pstmt.executeUpdate();  
         } catch (SQLException e) {  
-            System.out.println("Poo");  
+            System.out.println(e.getMessage());  
         }  
     }
     
@@ -167,7 +180,7 @@ public class DAO {
     }
     
     public void insertCards( String account_num, String card_num, double balance) {
-        String sql = "INSERT INTO cards(account_id, card_num, balance) VALUES(?,?,?)";
+        String sql = "INSERT INTO cards(account_num, card_num, balance) VALUES(?,?,?)";
         
         try{   
             PreparedStatement pstmt = conn.prepareStatement(sql);    
@@ -190,21 +203,7 @@ public class DAO {
             pstmt.executeUpdate();  
         } catch (SQLException e) {  
             System.out.println(e.getMessage());  
-        }
-        double current_balance = DAO.shared.getBalance(destination_account);
-        double new_balance = current_balance + amount;
-        
-        String sql2 = "UPDATE accounts SET balance = ? WHERE account_num = ?";
-        
-        try{
-            PreparedStatement pstmt = conn.prepareStatement(sql2); 
-            pstmt.setDouble(1, new_balance);
-            pstmt.setString(2, destination_account);
-            pstmt.executeUpdate();
-        }
-         catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
+        }  
     }
     
     public void insertWithdrawals(String source_account, double amount) {
@@ -217,22 +216,7 @@ public class DAO {
             pstmt.executeUpdate();
         } catch (SQLException e) {  
             System.out.println(e.getMessage());  
-        }
-        
-        double current_balance = DAO.shared.getBalance(source_account);
-        double new_balance = current_balance - amount;
-        
-        String sql2 = "UPDATE accounts SET balance = ? WHERE account_num = ?";
-        
-        try{
-            PreparedStatement pstmt = conn.prepareStatement(sql2); 
-            pstmt.setDouble(1, new_balance);
-            pstmt.setString(2, source_account);
-            pstmt.executeUpdate();
-        }
-         catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
+        }  
     }
     
     //*
@@ -257,39 +241,7 @@ public class DAO {
             pstmt.executeUpdate();  
         } catch (SQLException e) {  
             System.out.println(e.getMessage());  
-        }
-        
-        double current_balance1 = DAO.shared.getBalance(source_account);
-        double new_balance1 = current_balance1 - amount;
-        
-        String sql3 = "UPDATE accounts SET balance = ? WHERE account_num = ?";
-        
-        try{
-            PreparedStatement pstmt = conn.prepareStatement(sql3); 
-            pstmt.setDouble(1, new_balance1);
-            pstmt.setString(2, source_account);
-            pstmt.executeUpdate();
-        }
-         catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        
-        double current_balance2 = DAO.shared.getBalance(destination_account);
-        double new_balance2 = current_balance2 + amount;
-        
-        String sql4 = "UPDATE accounts SET balance = ? WHERE account_num = ?";
-        
-        try{
-            PreparedStatement pstmt = conn.prepareStatement(sql4); 
-            pstmt.setDouble(1, new_balance2);
-            pstmt.setString(2, destination_account);
-            pstmt.executeUpdate();
-        }
-         catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        
-        
+        }  
     } //*/
     
     public void insertReceipts( String card_num, double subTotal, double total, double tax,
@@ -310,24 +262,6 @@ public class DAO {
         } catch (SQLException e) {  
             System.out.println(e.getMessage());  
         }  
-    }
-    
-    public double getBalance(String account_num){
-        String sql = "SELECT balance FROM accounts WHERE account_num = ?;";
-        double result = 0;
-        
-        try (
-             PreparedStatement pstmt  = conn.prepareStatement(sql)){
-            
-            pstmt.setString(1,account_num);
-            ResultSet rs  = pstmt.executeQuery();
-            result = rs.getDouble("balance");
-            
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        
-        return result;
     }
     
     public User login (String un, String pw) {
@@ -377,8 +311,7 @@ public class DAO {
                     currUser = new User();
                     currUser.setName(userName);
                     currUser.setID(userID);
-                    Session.shared.setUID(userID);
-                    //shared.getAccounts(userID); //T/S
+                    shared.getAccounts(userID); //T/S
                 }
                 else Main.showAlert(DialogTypes.FAILURE,null);
             }
@@ -397,17 +330,24 @@ public class DAO {
     
     public ArrayList<String> getAccounts (int uid) {
         int numResults = 0;
-        String sql = "SELECT account_id FROM users_to_accounts WHERE user_id = ?;";
+        String sql = "SELECT account_id FROM users_to_accounts WHERE user_id = ";
         ResultSet result;
         ArrayList<Integer> accts = new ArrayList<Integer>();
         ArrayList<String> acctNums = new ArrayList<String>();
+        
+        System.out.println(Integer.toString(uid));
 
-        //shared.connect();
+        shared.connect();
 
         try{
+            Statement stmt = conn.createStatement();
+            sql = sql.concat(String.format("%d;", uid));
+            result = stmt.executeQuery(sql);
+            /*
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, uid);
             result = pstmt.executeQuery();
+            */
             while (result.next()) {
                 numResults++;
                 accts.add(result.getInt("account_id"));
@@ -416,19 +356,25 @@ public class DAO {
             Logger.getLogger(WarningController.class.getName()).log(Level.SEVERE, null, e);
             Main.showAlert(DialogTypes.DBERROR,null);
         }
+        
+        if(numResults==0) System.out.println("numResults==0");
 
         numResults = 0;
         sql = "SELECT account_num FROM accounts WHERE ";
         Enumeration<Integer> eAccts = Collections.enumeration(accts);
+        
         while(eAccts.hasMoreElements()) {
+            System.out.println("test"); //T/S
             sql = sql.concat(String.format("id=%s ", eAccts.nextElement()));
             if(eAccts.hasMoreElements()) sql = sql.concat("OR ");
-            else sql = sql.concat(";");
         } //*/
+        sql = sql.concat(";");
+        
+        System.out.println(sql); //T/S
 
         try{
-            PreparedStatement pstmt  = conn.prepareStatement(sql);
-            result = pstmt.executeQuery();
+            Statement stmt = conn.createStatement();
+            result = stmt.executeQuery(sql);
             while (result.next()) {
                 numResults++;
                 acctNums.add(result.getString("account_num"));
@@ -455,6 +401,36 @@ public class DAO {
         ArrayList<Long> cards = new ArrayList<Long>();
         
         return cards;
+    }
+    
+    public int getAccountID(String accountNum) {
+        int aid = 0;
+        int numResults = 0;
+        String sql = "SELECT id FROM accounts WHERE account_num = ";
+        ResultSet result;
+        
+        shared.connect();
+
+        try{
+            Statement stmt = conn.createStatement();
+            sql = sql.concat(String.format("%d;", accountNum));
+            result = stmt.executeQuery(sql);
+            while (result.next()) {
+                numResults++;
+                if(numResults>1) {
+                    //should not happen since user_name is unique
+                    Main.showAlert(DialogTypes.DBERROR,null);
+                    result = null;
+                    break;
+                }
+                aid = result.getInt("id");
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(WarningController.class.getName()).log(Level.SEVERE, null, e);
+            Main.showAlert(DialogTypes.DBERROR,null);
+        }
+        
+        return aid;
     }
     
     //Source: https://www.baeldung.com/sha-256-hashing-java
