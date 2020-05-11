@@ -325,24 +325,6 @@ public class DAO {
         }  
     }
     
-    public double getBalance(String account_num){
-        String sql = "SELECT balance FROM accounts WHERE account_num = ?;";
-        double result = 0;
-        
-        try (
-             PreparedStatement pstmt  = conn.prepareStatement(sql)){
-            
-            pstmt.setString(1,account_num);
-            ResultSet rs  = pstmt.executeQuery();
-            result = rs.getDouble("balance");
-            
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        
-        return result;
-    }
-    
     public User login (String un, String pw) {
         User currUser = null;
         String sql = "SELECT id, user_name, last_update, password, email_address, phone_num FROM users WHERE user_name = ?;";
