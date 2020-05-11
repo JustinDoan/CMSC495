@@ -413,7 +413,7 @@ public class DAO {
 
         try{
             Statement stmt = conn.createStatement();
-            sql = sql.concat(String.format("%d;", accountNum));
+            sql = sql.concat(accountNum);
             result = stmt.executeQuery(sql);
             while (result.next()) {
                 numResults++;
