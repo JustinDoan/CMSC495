@@ -202,7 +202,7 @@ public class DAO {
             pstmt.setString(2, destination_account);
             pstmt.executeUpdate();
         }
-         catch (SQLException e) {
+        catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
