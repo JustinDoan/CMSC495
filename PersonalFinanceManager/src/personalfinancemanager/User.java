@@ -14,6 +14,7 @@ import java.util.ArrayList;
  * @author marcusmaibach
  */
 public class User {
+    int userID;
     String name;
     String address;
     String phone;
@@ -43,5 +44,8 @@ public class User {
     }
     public void setPhone(String pn) {
         this.phone = pn;
+    }
+    public void setID(int uid) {
+        this.userID = uid;
     }
 }
