@@ -10,7 +10,7 @@ package personalfinancemanager;
  * @author zach
  */
 public class Session {
-    private long uid;
+    private int uid;
     private boolean isAuthd;
     private User currentUser;
     static Session shared = new Session();
@@ -24,10 +24,10 @@ public class Session {
     public User getCurrentUser(){
         return this.currentUser;
     }
-    public void setUID(long uid) {
+    public void setUID(int uid) {
         this.uid = uid;
     }
-    public long getUID() {
+    public int getUID() {
         return this.uid;
     }
     public void setUser(User u) {

@@ -47,7 +47,7 @@ public class TransactionController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         ObservableList<String> list = FXCollections.observableArrayList("Deposit","Withdrawal","Transfer");
         transactionBox.setItems(list);
-        ObservableList<String> accountList = FXCollections.observableArrayList("1", "2", "3");
+        ObservableList<String> accountList = FXCollections.observableArrayList(DAO.shared.getAccounts(Session.shared.getUID()));
         recipientBox.setItems(accountList);
         sourceBox.setItems(accountList);
         sourceBox.setDisable(true);

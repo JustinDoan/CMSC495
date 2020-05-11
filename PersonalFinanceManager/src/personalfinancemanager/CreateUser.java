@@ -34,12 +34,7 @@ public class CreateUser implements Initializable {
     private TextField passwordField;
     @FXML
     private TextField confirmPasswordField;
-    @FXML
-    private TextField totalField;
-    @FXML
-    private TextField cashField;
-    @FXML
-    private DatePicker dateField;
+    
 
     Stage enclosingStage;
     
@@ -71,6 +66,7 @@ public class CreateUser implements Initializable {
                     long date = System.currentTimeMillis();
                     String stringDate = Long.toString(date);
                     DAO.shared.insertUser(stringDate, username, password);
+                    enclosingStage.close();
     	}
     	
     	
